@@ -1,6 +1,7 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
+import com.bootcamp.commons.ws.constants.CommonsWsConstants;
 import com.bootcamp.commons.ws.models.Error;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.services.AxeService;
@@ -16,6 +17,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -130,6 +132,19 @@ public class AxeController {
         List<Axe> axes = axeService.read(request);
         return new ResponseEntity<List<Axe>>(axes, HttpStatus.OK);
     }
+    
+    @RequestMapping(method = RequestMethod.GET, value = "/count")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Count axes", notes = "Count axes")
+    public ResponseEntity<HashMap<String,Integer>> countAxes() throws SQLException {
+        
+        HttpStatus httpStatus = null;
+        int count = axeService.getCountAxes();
+        HashMap<String,Integer> map = null;
+        map.put(CommonsWsConstants.MAP_COUNT_KEY, count);
+        
 
+        return new ResponseEntity<HashMap<String,Integer>>(map, httpStatus);
+    }
 
 }

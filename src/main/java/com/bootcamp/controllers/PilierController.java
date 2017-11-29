@@ -41,8 +41,8 @@ public class PilierController {
         //PilierUWs pilierWs = new PilierWs();
         HttpStatus httpStatus = null;
 
-        int id = pilierService.create(pilierUWs);
-        pilierUWs.setId(id);
+        //int id = pilierService.create(pilierUWs);
+        //pilierUWs.setId(id);
         httpStatus = HttpStatus.OK;
 
         return new ResponseEntity<PilierUWs>(pilierUWs, httpStatus);
@@ -119,17 +119,17 @@ public class PilierController {
 //        return new ResponseEntity<PilierWs>(pilierWs, httpStatus);
 //    }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-    public ResponseEntity<List<PilierUWs>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
-
-        //PilierWss pilierWss = new PilierWss();
-        HttpStatus httpStatus = null;
-
-        List<PilierUWs> pilierUWss = pilierService.read(request);
-        httpStatus = HttpStatus.OK;
-
-        return new ResponseEntity<List<PilierUWs>>(pilierUWss, httpStatus);
-    }
+//    @RequestMapping(method = RequestMethod.GET, value = "/")
+//    @ApiVersions({"1.0"})
+//    @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
+//    public ResponseEntity<List<PilierUWs>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+//
+//        //PilierWss pilierWss = new PilierWss();
+//        HttpStatus httpStatus = null;
+//
+//        //List<PilierUWs> pilierUWss = pilierService.read(request);
+//        httpStatus = HttpStatus.OK;
+//
+//        return new ResponseEntity<List<PilierUWs>>(pilierUWss, httpStatus);
+//    }
 }
