@@ -32,7 +32,7 @@ public class PilierService implements DatabaseConstants{
         pilierCRUD = new PilierCRUD();
     }
 
-//    public int  create(PilierUWs pilierUWs) throws SQLException {
+//    local.public int  create(PilierUWs pilierUWs) throws SQLException {
 //         Pilier pilier = new Pilier();
 //         pilier.setDescription(pilierUWs.getDescription());
 //         pilier.setNom(pilierUWs.getNom());

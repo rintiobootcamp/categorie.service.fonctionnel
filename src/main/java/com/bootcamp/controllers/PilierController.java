@@ -3,8 +3,6 @@ package com.bootcamp.controllers;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.ws.models.Error;
 import com.bootcamp.commons.ws.models.PilierUWs;
-import com.bootcamp.commons.ws.models.PilierWs;
-import com.bootcamp.commons.ws.models.PilierWss;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.services.PilierService;
 import com.bootcamp.version.ApiVersions;
@@ -52,7 +50,7 @@ public class PilierController {
 //    @RequestMapping(method = RequestMethod.PUT, value = "/")
 //    @ApiVersions({"1.0"})
 //    @ApiOperation(value = "Update a new pilier", notes = "Update a new pilier")
-//    public ResponseEntity<PilierWs> update(@RequestBody @Valid Pilier pilier) {
+//    local.public ResponseEntity<PilierWs> update(@RequestBody @Valid Pilier pilier) {
 //
 //        PilierWs pilierWs = new PilierWs();
 //        HttpStatus httpStatus = null;
@@ -75,7 +73,7 @@ public class PilierController {
 //    @RequestMapping(method = RequestMethod.DELETE, value = "/{id}")
 //    @ApiVersions({"1.0"})
 //    @ApiOperation(value = "Delete a pilier", notes = "Delete a pilier")
-//    public ResponseEntity<PilierWs> delete(@PathVariable(name = "id") int id) {
+//    local.public ResponseEntity<PilierWs> delete(@PathVariable(name = "id") int id) {
 //
 //        PilierWs pilierWs = new PilierWs();
 //        HttpStatus httpStatus = null;
@@ -99,7 +97,7 @@ public class PilierController {
 //    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
 //    @ApiVersions({"1.0"})
 //    @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-//    public ResponseEntity<PilierWs> read(@PathVariable(name = "id") int id) {
+//    local.public ResponseEntity<PilierWs> read(@PathVariable(name = "id") int id) {
 //
 //        PilierWs pilierWs = new PilierWs();
 //        HttpStatus httpStatus = null;
@@ -122,7 +120,7 @@ public class PilierController {
 //    @RequestMapping(method = RequestMethod.GET, value = "/")
 //    @ApiVersions({"1.0"})
 //    @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-//    public ResponseEntity<List<PilierUWs>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+//    local.public ResponseEntity<List<PilierUWs>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
 //
 //        //PilierWss pilierWss = new PilierWss();
 //        HttpStatus httpStatus = null;

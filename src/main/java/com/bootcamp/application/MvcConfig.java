@@ -23,7 +23,7 @@ public class MvcConfig extends WebMvcConfigurerAdapter {
 
         ClassLoaderTemplateResolver templateResolver = new ClassLoaderTemplateResolver();
 
-        templateResolver.setPrefix("public/");
+        templateResolver.setPrefix("local/public/");
         templateResolver.setCacheable(false);
         templateResolver.setSuffix(".html");
         templateResolver.setTemplateMode("HTML5");
