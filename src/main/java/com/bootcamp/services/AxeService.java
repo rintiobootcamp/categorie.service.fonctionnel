@@ -68,5 +68,9 @@ public class AxeService implements DatabaseConstants{
 
         return axes;
     }
+    
+    public int getCountAxes() throws SQLException{
+        return axeCRUD.read().size();
+    }
 
 }
