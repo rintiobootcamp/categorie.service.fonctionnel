@@ -4,18 +4,15 @@ import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
-import com.bootcamp.commons.ws.models.PilierUWs;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Pilier;
-import com.bootcamp.repositories.PilierRepository;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -76,5 +73,13 @@ public class PilierService implements DatabaseConstants {
 
         return piliers;
     }
+
+
+//    private List<PilierUWs> convertPilerToPilierUWS(List<Pilier> piliers){
+//        List<PilierUWs> pilierUWss = new ArrayList<>();
+//        for(Pilier pilier: piliers){
+//           PilierUWs pilierUWs = new PilierUWs();
+//        }
+//    }
 
 }

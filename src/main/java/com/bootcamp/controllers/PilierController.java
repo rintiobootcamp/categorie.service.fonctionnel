@@ -3,6 +3,7 @@ package com.bootcamp.controllers;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.ws.models.PilierWs;
 import com.bootcamp.commons.ws.models.PilierWss;
+import com.bootcamp.commons.ws.models.PilierUWs;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.services.PilierService;
 import com.bootcamp.version.ApiVersions;
@@ -108,6 +109,21 @@ public class PilierController {
 //
 //        return new ResponseEntity<PilierUWs>(pilierUWs, httpStatus);
 //}
+    @RequestMapping(method = RequestMethod.POST, value = "/")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create a new pilier", notes = "Create a new pilier")
+    public ResponseEntity<PilierUWs> create(@RequestBody @Valid PilierUWs pilierUWs) throws SQLException {
+
+        //PilierUWs pilierWs = new PilierWs();
+        HttpStatus httpStatus = null;
+
+        //int id = pilierService.create(pilierUWs);
+        //pilierUWs.setId(id);
+        httpStatus = HttpStatus.OK;
+
+        return new ResponseEntity<PilierUWs>(pilierUWs, httpStatus);
+    }
+
 
 //    @RequestMapping(method = RequestMethod.PUT, value = "/")
 //    @ApiVersions({"1.0"})
