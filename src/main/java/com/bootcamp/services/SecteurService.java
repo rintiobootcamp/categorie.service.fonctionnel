@@ -57,17 +57,17 @@ public class SecteurService implements DatabaseConstants{
     public List<Secteur> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
-        List<Secteur> axes = null;
+        List<Secteur> secteurs = null;
         if(criterias == null && fields == null)
-           axes =  secteurCRUD.read();
+            secteurs =  secteurCRUD.read();
         else if(criterias!= null && fields==null)
-            axes = secteurCRUD.read(criterias);
+            secteurs = secteurCRUD.read(criterias);
         else if(criterias== null && fields!=null)
-            axes = secteurCRUD.read(fields);
+            secteurs = secteurCRUD.read(fields);
         else
-            axes = secteurCRUD.read(criterias, fields);
+            secteurs = secteurCRUD.read(criterias, fields);
 
-        return axes;
+        return secteurs;
     }
 
 }
