@@ -77,4 +77,12 @@ public class PilierService implements DatabaseConstants {
         return piliers;
     }
 
+
+//    private List<PilierUWs> convertPilerToPilierUWS(List<Pilier> piliers){
+//        List<PilierUWs> pilierUWss = new ArrayList<>();
+//        for(Pilier pilier: piliers){
+//           PilierUWs pilierUWs = new PilierUWs();
+//        }
+//    }
+
 }
