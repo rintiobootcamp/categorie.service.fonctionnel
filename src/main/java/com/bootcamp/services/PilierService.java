@@ -21,14 +21,13 @@ import java.util.List;
 /**
  * Created by darextossa on 11/27/17.
  */
-
 @Component
-public class PilierService implements DatabaseConstants{
+public class PilierService implements DatabaseConstants {
 
     PilierCRUD pilierCRUD;
 
     @PostConstruct
-    public void init(){
+    public void init() {
         pilierCRUD = new PilierCRUD();
     }
 
@@ -42,7 +41,6 @@ public class PilierService implements DatabaseConstants{
 //
 //         return pilier.getId();
 //    }
-
     public void update(Pilier pilier) throws SQLException {
         pilierCRUD.update(pilier);
     }
@@ -62,19 +60,19 @@ public class PilierService implements DatabaseConstants{
         return piliers.get(0);
     }
 
-
     public List<Pilier> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Pilier> piliers = null;
-        if(criterias == null && fields == null)
-           piliers =  pilierCRUD.read();
-        else if(criterias!= null && fields==null)
+        if (criterias == null && fields == null) {
+            piliers = pilierCRUD.read();
+        } else if (criterias != null && fields == null) {
             piliers = pilierCRUD.read(criterias);
-        else if(criterias== null && fields!=null)
+        } else if (criterias == null && fields != null) {
             piliers = pilierCRUD.read(fields);
-        else
+        } else {
             piliers = pilierCRUD.read(criterias, fields);
+        }
 
         return piliers;
     }
