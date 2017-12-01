@@ -18,7 +18,7 @@ import java.util.List;
 
 
 @RestController("PilierController")
-@RequestMapping("/pilier")
+@RequestMapping("/piliers")
 @Api(value = "Pilier API", description = "Pilier API")
 public class PilierController {
 
@@ -39,7 +39,7 @@ public class PilierController {
         return new ResponseEntity<Pilier>(pilier, httpStatus);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/list")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "All pilars", notes = "All pilars")
     public ResponseEntity<List<Pilier>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
