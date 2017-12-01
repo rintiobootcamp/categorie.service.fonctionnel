@@ -20,7 +20,7 @@ import java.util.List;
 
 
 @RestController("AxeController")
-@RequestMapping("/axe")
+@RequestMapping("/axes")
 @Api(value = "Axe API", description = "Axe API")
 public class AxeController {
 
@@ -30,7 +30,7 @@ public class AxeController {
     HttpServletRequest request;
 
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a axe", notes = "Read a axe")
     public ResponseEntity<List<Axe>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {

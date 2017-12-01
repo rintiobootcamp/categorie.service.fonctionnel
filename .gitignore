@@ -1,5 +1,7 @@
-.idea
+.idea/
 .gradle
 CathegoriesRestServices.iml
-target
+target/
 /src/main/resources/local/
+archive.zip
+nb-configuration.xml
