@@ -4,10 +4,12 @@ import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -18,10 +20,17 @@ import java.util.List;
 @Component
 public class PilierService implements DatabaseConstants {
 
+    PilierCRUD pilierCRUD;
+
+    @PostConstruct
+    public void init(){
+        pilierCRUD = new PilierCRUD();
+    }
+
     public Pilier read(int id) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Pilier> piliers = PilierCRUD.read(criterias);
+        List<Pilier> piliers = pilierCRUD.read(criterias);
 
         return piliers.get(0);
     }

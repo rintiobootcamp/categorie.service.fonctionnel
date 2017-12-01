@@ -30,7 +30,7 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-    public ResponseEntity<Pilier> read(@PathVariable(name = "id") int id) throws SQLException {
+    public ResponseEntity<Pilier> read(@PathVariable int id) throws SQLException {
 
         HttpStatus httpStatus = null;
 
