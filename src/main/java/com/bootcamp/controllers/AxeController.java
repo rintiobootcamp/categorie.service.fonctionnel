@@ -2,7 +2,6 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.ws.constants.CommonsWsConstants;
-import com.bootcamp.commons.ws.models.Error;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.services.AxeService;
 import com.bootcamp.version.ApiVersions;
@@ -14,7 +13,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
