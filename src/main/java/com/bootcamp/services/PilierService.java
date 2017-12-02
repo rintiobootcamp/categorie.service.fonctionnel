@@ -39,31 +39,10 @@ public class PilierService implements DatabaseConstants {
         return PilierCRUD.read();
     }
 
-//    local.public int  create(PilierUWs pilierUWs) throws SQLException {
-//         Pilier pilier = new Pilier();
-//         pilier.setDescription(pilierUWs.getDescription());
-//         pilier.setNom(pilierUWs.getNom());
-//         pilier.setDateCreation(System.currentTimeMillis());
-//         pilier.setDateMiseAJour(System.currentTimeMillis());
-//         pilierCRUD.create(pilier);
-//
-//         return pilier.getId();
-//    }
-//    public void update(Pilier pilier) throws SQLException {
-//        pilierCRUD.update(pilier);
-//    }
-//
-//    public Pilier delete(int id) throws SQLException {
-//        Pilier pilier = read(id);
-//        pilierCRUD.delete(pilier);
-//
-//        return pilier;
-//    }
-//    private List<PilierUWs> convertPilerToPilierUWS(List<Pilier> piliers){
-//        List<PilierUWs> pilierUWss = new ArrayList<>();
-//        for(Pilier pilier: piliers){
-//           PilierUWs pilierUWs = new PilierUWs();
-//        }
-//    }
+    public Pilier create(Pilier pilier) throws SQLException {
+        PilierCRUD.create(pilier);
+        return pilier;
+    }
+
 
 }

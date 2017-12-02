@@ -37,6 +37,15 @@ public class AxeController {
         List<Axe> axes = axeService.read(request);
         return new ResponseEntity<List<Axe>>(axes, HttpStatus.OK);
     }
+
+    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Read a specific axe", notes = "Read a specific axe")
+    public ResponseEntity<Axe> read(@PathVariable(name = "id") int id) throws SQLException {
+
+        Axe axe = axeService.read(id);
+        return new ResponseEntity<Axe>(axe, HttpStatus.OK);
+    }
     
     @RequestMapping(method = RequestMethod.GET, value = "/count")
     @ApiVersions({"1.0"})
