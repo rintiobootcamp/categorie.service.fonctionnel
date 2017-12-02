@@ -13,27 +13,28 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RestController;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-@RestController("SecteurController")
+@RestController("SecteurContoller")
 @RequestMapping("/secteurs")
 @Api(value = "Secteur API", description = "Secteur API")
 public class SecteurController {
+//
 
     @Autowired
     SecteurService secteurService;
 
     @Autowired
     HttpServletRequest request;
-       
+
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a secteur", notes = "Create a secteur")
@@ -42,24 +43,20 @@ public class SecteurController {
         return new ResponseEntity<>(secteur, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/{id}")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a Secteur", notes = "Read a Secteur")
-    public ResponseEntity<Secteur> read(@PathVariable(name = "id") int id) throws SQLException {
+    @ApiOperation(value = "Read All Secteurs", notes = "Read aall the Secteurs")
+    public ResponseEntity<List<Secteur>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        List<Secteur> secteurs = secteurService.read(request);
+        return new ResponseEntity<List<Secteur>>(secteurs, HttpStatus.OK);
+    }
 
+    @RequestMapping(value = "/{id}", method = RequestMethod.GET)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Get one Secteurs", notes = "Read a particular Secteurs")
+    public ResponseEntity<Secteur> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Secteur secteur = secteurService.read(id);
         return new ResponseEntity<Secteur>(secteur, HttpStatus.OK);
     }
 
-    @RequestMapping(method = RequestMethod.GET)
-    @ApiVersions({"1.0"})
-    @ApiOperation(value = "Read a Secteur", notes = "Read a Secteur")
-    public ResponseEntity<List<Secteur>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
-        List<Secteur> secteurs = new ArrayList<>();
-        HttpStatus httpStatus = null;
-
-        secteurs = secteurService.read(request);
-
-        return new ResponseEntity<List<Secteur>>(secteurs, HttpStatus.OK);
-    }
 }

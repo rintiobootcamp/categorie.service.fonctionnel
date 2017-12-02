@@ -51,7 +51,7 @@ public class PilierController {
         return new ResponseEntity<Pilier>(pilier, httpStatus);
     }
 
-    @RequestMapping(method = RequestMethod.GET, value = "/")
+    @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "liste des  pilars", notes = "liste des piliers")
     public ResponseEntity<List<Pilier>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
