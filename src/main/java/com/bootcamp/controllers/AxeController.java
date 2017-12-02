@@ -3,6 +3,7 @@ package com.bootcamp.controllers;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.ws.constants.CommonsWsConstants;
 import com.bootcamp.entities.Axe;
+import com.bootcamp.entities.Pilier;
 import com.bootcamp.services.AxeService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
@@ -17,7 +18,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.List;
-
+import javax.validation.Valid;
 
 @RestController("AxeController")
 @RequestMapping("/axes")
@@ -29,6 +30,13 @@ public class AxeController {
     @Autowired
     HttpServletRequest request;
 
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create a axe", notes = "Create a axe")
+    public ResponseEntity<Axe> create(@RequestBody @Valid Axe axe) throws SQLException {
+        axe = axeService.create(axe);
+        return new ResponseEntity<>(axe, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
@@ -46,18 +54,17 @@ public class AxeController {
         Axe axe = axeService.read(id);
         return new ResponseEntity<Axe>(axe, HttpStatus.OK);
     }
-    
+
     @RequestMapping(method = RequestMethod.GET, value = "/count")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Count axes", notes = "Count axes")
-    public ResponseEntity<HashMap<String,Integer>> countAxes() throws SQLException {
-        
-        int count = axeService.getCountAxes();
-        HashMap<String,Integer> map = new HashMap<>();
-        map.put(CommonsWsConstants.MAP_COUNT_KEY, count);
-        
+    public ResponseEntity<HashMap<String, Integer>> countAxes() throws SQLException {
 
-        return new ResponseEntity<HashMap<String,Integer>>(map, HttpStatus.OK);
+        int count = axeService.getCountAxes();
+        HashMap<String, Integer> map = new HashMap<>();
+        map.put(CommonsWsConstants.MAP_COUNT_KEY, count);
+
+        return new ResponseEntity<HashMap<String, Integer>>(map, HttpStatus.OK);
     }
 
 }

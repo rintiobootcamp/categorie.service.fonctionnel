@@ -29,8 +29,9 @@ public class SecteurService implements DatabaseConstants{
         secteurCRUD = new SecteurCRUD();
     }
 
-    public void create(Secteur secteur) throws SQLException {
+    public Secteur create(Secteur secteur) throws SQLException {
          secteurCRUD.create(secteur);
+         return secteur;
     }
 
     public void update(Secteur secteur) throws SQLException {

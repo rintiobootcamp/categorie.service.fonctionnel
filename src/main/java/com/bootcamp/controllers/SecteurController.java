@@ -1,6 +1,7 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
+import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.services.SecteurService;
 import com.bootcamp.version.ApiVersions;
@@ -18,8 +19,12 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import javax.validation.Valid;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
 
-@RequestMapping("/secteur")
+@RestController("SecteurController")
+@RequestMapping("/secteurs")
 @Api(value = "Secteur API", description = "Secteur API")
 public class SecteurController {
 
@@ -28,7 +33,14 @@ public class SecteurController {
 
     @Autowired
     HttpServletRequest request;
-
+       
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create a secteur", notes = "Create a secteur")
+    public ResponseEntity<Secteur> create(@RequestBody @Valid Secteur secteur) throws SQLException {
+        secteur = secteurService.create(secteur);
+        return new ResponseEntity<>(secteur, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})

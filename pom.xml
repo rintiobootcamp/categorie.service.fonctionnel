@@ -214,6 +214,9 @@
     </profiles>
 
     <build>
+      <finalName>service     </finalName>  
+
+              
         <plugins>
             <!-- Package as an executable jar/war -->
             <plugin>

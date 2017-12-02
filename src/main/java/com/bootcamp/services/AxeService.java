@@ -29,8 +29,9 @@ public class AxeService implements DatabaseConstants{
         axeCRUD = new AxeCRUD();
     }
 
-    public void create(Axe axe) throws SQLException {
-         axeCRUD.create(axe);
+    public Axe create(Axe axe) throws SQLException {
+       axeCRUD.create(axe);
+      return axe;
     }
 
     public void update(Axe axe) throws SQLException {
