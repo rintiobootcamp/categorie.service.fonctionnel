@@ -7,11 +7,13 @@ import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -26,6 +28,16 @@ public class PilierController {
     PilierService pilierService;
     @Autowired
     HttpServletRequest request;
+
+
+    @RequestMapping(method = RequestMethod.POST)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create a pilier", notes = "Create a pilier")
+    public ResponseEntity<Pilier> create(@RequestBody @Valid Pilier pilier) throws SQLException {
+
+        pilier = pilierService.create(pilier);
+        return new ResponseEntity<Pilier>(pilier, HttpStatus.OK);
+    }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
