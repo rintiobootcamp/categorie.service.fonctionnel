@@ -1,7 +1,6 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
-import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.services.SecteurService;
 import com.bootcamp.version.ApiVersions;
@@ -22,7 +21,6 @@ import java.util.List;
 import javax.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
 
 @RestController("SecteurContoller")
 @RequestMapping("/secteurs")

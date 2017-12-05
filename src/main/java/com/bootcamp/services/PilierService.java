@@ -4,7 +4,6 @@ import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
-import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
@@ -40,6 +39,7 @@ public class PilierService implements DatabaseConstants {
     }
 
     public Pilier create(Pilier pilier) throws SQLException {
+        pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.create(pilier);
         return pilier;
     }

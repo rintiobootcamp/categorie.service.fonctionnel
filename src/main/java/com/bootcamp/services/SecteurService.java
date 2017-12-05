@@ -30,6 +30,7 @@ public class SecteurService implements DatabaseConstants{
     }
 
     public Secteur create(Secteur secteur) throws SQLException {
+        secteur.setDateMiseAJour(System.currentTimeMillis());
          secteurCRUD.create(secteur);
          return secteur;
     }
