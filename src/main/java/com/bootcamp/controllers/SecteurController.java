@@ -20,12 +20,14 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 import javax.validation.Valid;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController("SecteurContoller")
 @RequestMapping("/secteurs")
 @Api(value = "Secteur API", description = "Secteur API")
+@CrossOrigin(origins = "*")
 public class SecteurController {
 //
 

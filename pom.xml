@@ -214,7 +214,7 @@
     </profiles>
 
     <build>
-      <finalName>service     </finalName>  
+      <finalName>categorieService</finalName>
 
               
         <plugins>

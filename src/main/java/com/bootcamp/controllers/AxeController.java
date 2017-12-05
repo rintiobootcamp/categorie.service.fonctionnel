@@ -23,6 +23,7 @@ import javax.validation.Valid;
 @RestController("AxeController")
 @RequestMapping("/axes")
 @Api(value = "Axe API", description = "Axe API")
+@CrossOrigin(origins = "*")
 public class AxeController {
 
     @Autowired
