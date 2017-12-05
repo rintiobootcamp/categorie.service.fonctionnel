@@ -11,7 +11,11 @@ import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -40,7 +44,9 @@ public class PilierService implements DatabaseConstants {
     }
 
     public Pilier create(Pilier pilier) throws SQLException {
+        pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.create(pilier);
+
         return pilier;
     }
 

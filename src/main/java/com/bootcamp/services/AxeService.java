@@ -30,6 +30,7 @@ public class AxeService implements DatabaseConstants{
     }
 
     public Axe create(Axe axe) throws SQLException {
+        axe.setDateMiseAJour(System.currentTimeMillis());
        axeCRUD.create(axe);
       return axe;
     }
