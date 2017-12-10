@@ -35,15 +35,15 @@ public class SecteurService implements DatabaseConstants{
          return secteur;
     }
 
-    public void update(Secteur secteur) throws SQLException {
+    public boolean update(Secteur secteur) throws SQLException {
         secteurCRUD.update(secteur);
+        return true;
     }
 
-    public Secteur delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Secteur secteur = read(id);
         secteurCRUD.delete(secteur);
-
-        return secteur;
+        return true;
     }
 
     public Secteur read(int id) throws SQLException {
@@ -70,6 +70,26 @@ public class SecteurService implements DatabaseConstants{
             secteurs = secteurCRUD.read(criterias, fields);
 
         return secteurs;
+    }
+
+    public Secteur getByName(String nom) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("nom", "=", nom));
+        List<Secteur> secteurs = secteurCRUD.read(criterias);
+
+        return secteurs.get(0);
+    }
+
+    public boolean exist(Secteur secteur) throws Exception{
+        if(getByName(secteur.getNom())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
 }

@@ -8,6 +8,8 @@ import com.bootcamp.services.AxeService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -25,7 +27,7 @@ import javax.validation.Valid;
 @Api(value = "Axe API", description = "Axe API")
 @CrossOrigin(origins = "*")
 public class AxeController {
-
+    private final Logger LOG = LoggerFactory.getLogger(AxeController.class);
     @Autowired
     AxeService axeService;
     @Autowired
@@ -34,8 +36,18 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a axe", notes = "Create a axe")
-    public ResponseEntity<Axe> create(@RequestBody @Valid Axe axe) throws SQLException {
-        axe = axeService.create(axe);
+    public ResponseEntity<Axe> create(@RequestBody @Valid Axe axe) throws Exception {
+        LOG.info("Creating a new Axe : {} ", axe);
+          if(!axeService.exist(axe))
+            axe = axeService.create(axe);
+        return new ResponseEntity<>(axe, HttpStatus.OK);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Update a axe", notes = "Update a axe")
+    public ResponseEntity<Axe> update(@RequestBody Axe axe) throws Exception {
+            axe = axeService.create(axe);
         return new ResponseEntity<>(axe, HttpStatus.OK);
     }
 
@@ -43,7 +55,7 @@ public class AxeController {
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a axe", notes = "Read a axe")
     public ResponseEntity<List<Axe>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
-        List<Axe> axes = axeService.read(request);
+        List<Axe> axes = axeService.readAll(request);
         return new ResponseEntity<List<Axe>>(axes, HttpStatus.OK);
     }
 
@@ -54,6 +66,14 @@ public class AxeController {
 
         Axe axe = axeService.read(id);
         return new ResponseEntity<Axe>(axe, HttpStatus.OK);
+    }
+
+    @RequestMapping(value="/{id}",method = RequestMethod.DELETE)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Delete a axe", notes = "Delete a axe")
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+         axeService.delete(id);
+        return new ResponseEntity<>(true, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/count")

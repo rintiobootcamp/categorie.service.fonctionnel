@@ -1,7 +1,6 @@
 package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
-import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.services.SecteurService;
 import com.bootcamp.version.ApiVersions;
@@ -52,12 +51,29 @@ public class SecteurController {
         return new ResponseEntity<List<Secteur>>(secteurs, HttpStatus.OK);
     }
 
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Update a secteur", notes = "update a secteur")
+    public ResponseEntity<Boolean> update(@RequestBody @Valid Secteur secteur) throws SQLException {
+        boolean done =  secteurService.update(secteur);
+        return new ResponseEntity<>(done, HttpStatus.OK);
+    }
+
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Secteurs", notes = "Read a particular Secteurs")
     public ResponseEntity<Secteur> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Secteur secteur = secteurService.read(id);
         return new ResponseEntity<Secteur>(secteur, HttpStatus.OK);
+    }
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "delete Secteurs", notes = "delete a particular Secteurs")
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
+        if(secteurService.exist(id));
+        boolean done = secteurService.delete(id);
+        return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
 }

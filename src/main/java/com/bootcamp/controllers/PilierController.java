@@ -34,9 +34,8 @@ public class PilierController {
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a pilier", notes = "Create a pilier")
     public ResponseEntity<Pilier> create(@RequestBody @Valid Pilier pilier) throws SQLException {
-
         pilier = pilierService.create(pilier);
-        return new ResponseEntity<Pilier>(pilier, HttpStatus.OK);
+        return new ResponseEntity<>(pilier, HttpStatus.OK);
     }
 
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
@@ -61,5 +60,23 @@ public class PilierController {
         List<Pilier> piliers = pilierService.getAll();
         httpStatus = HttpStatus.OK;
         return new ResponseEntity<List<Pilier>>(piliers, httpStatus);
+    }
+
+    @RequestMapping(method = RequestMethod.PUT)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Update a pilier", notes = "update a pilier")
+    public ResponseEntity<Boolean> update(@RequestBody @Valid Pilier pilier) throws SQLException {
+         boolean done =  pilierService.update(pilier);
+        return new ResponseEntity<Boolean>(done, HttpStatus.OK);
+    }
+
+
+    @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "delete Piliers", notes = "delete a particular Piliers")
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
+        if(pilierService.exist(id));
+        boolean done = pilierService.delete(id);
+        return new ResponseEntity<>(done, HttpStatus.OK);
     }
 }
