@@ -1,4 +1,4 @@
-package com.bootcamp;
+package com.bootcamp.controllers;
 
 
 import org.testng.Assert;

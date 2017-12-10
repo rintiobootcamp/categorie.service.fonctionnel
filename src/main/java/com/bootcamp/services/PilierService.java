@@ -6,11 +6,16 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Pilier;
+import com.bootcamp.entities.Secteur;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
+import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
+import java.time.LocalDateTime;
+import java.util.Calendar;
 import java.util.List;
 
 /**
@@ -42,6 +47,37 @@ public class PilierService implements DatabaseConstants {
         pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.create(pilier);
         return pilier;
+    }
+
+    public boolean update(Pilier pilier) throws SQLException {
+        pilierCRUD.update(pilier);
+        return true;
+    }
+
+    public boolean delete(int id) throws SQLException {
+        Pilier pilier = read(id);
+        pilierCRUD.delete(pilier);
+        return true;
+    }
+
+    public Pilier getByName(String nom) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("nom", "=", nom));
+        List<Pilier> piliers = pilierCRUD.read(criterias);
+
+        return piliers.get(0);
+    }
+
+    public boolean exist(Pilier  pilier) throws Exception{
+        if(getByName(pilier.getNom())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
 

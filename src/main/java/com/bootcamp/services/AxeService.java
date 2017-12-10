@@ -29,21 +29,21 @@ public class AxeService implements DatabaseConstants{
         axeCRUD = new AxeCRUD();
     }
 
-    public Axe create(Axe axe) throws SQLException {
+    public Axe create(Axe axe) throws Exception {
         axe.setDateMiseAJour(System.currentTimeMillis());
        axeCRUD.create(axe);
       return axe;
     }
 
-    public void update(Axe axe) throws SQLException {
+    public boolean update(Axe axe) throws SQLException {
         axeCRUD.update(axe);
+        return true;
     }
 
-    public Axe delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException {
         Axe axe = read(id);
         axeCRUD.delete(axe);
-
-        return axe;
+        return true;
     }
 
     public Axe read(int id) throws SQLException {
@@ -54,8 +54,16 @@ public class AxeService implements DatabaseConstants{
         return axes.get(0);
     }
 
+    public Axe getByName(String nom) throws SQLException {
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("nom", "=", nom));
+        List<Axe> axes = axeCRUD.read(criterias);
 
-    public List<Axe> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        return axes.get(0);
+    }
+
+
+    public List<Axe> readAll(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes = null;
@@ -73,6 +81,18 @@ public class AxeService implements DatabaseConstants{
     
     public int getCountAxes() throws SQLException{
         return axeCRUD.read().size();
+    }
+
+    public boolean exist(Axe axe) throws Exception{
+        if(getByName(axe.getNom())!=null)
+            return true;
+        return false;
+    }
+
+    public boolean exist(int id) throws Exception{
+        if(read(id)!=null)
+            return true;
+        return false;
     }
 
 }
