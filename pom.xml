@@ -3,12 +3,19 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.bootcamp</groupId>
-    <artifactId>CathegoriesRestServices</artifactId>
+    <artifactId>CategoriesRestServices</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
 
     <name>CathegoriesRestServices</name>
     <url>http://maven.apache.org</url>
+
+    <properties>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <failOnMissingWebXml>false</failOnMissingWebXml>
+        <config.home>/home/config/dev</config.home>
+    </properties>
+
 
     <dependencies>
         <!-- https://mvnrepository.com/artifact/org.testng/testng -->
@@ -211,7 +218,7 @@
                         <filtering>true</filtering>
                     </resource>
                     <resource>
-                        <directory>src/main/resources/local</directory>
+                        <directory>${config.home}</directory>
                     </resource>
 
                 </resources>
@@ -228,7 +235,7 @@
                         <filtering>true</filtering>
                     </resource>
                     <resource>
-                        <directory>src/main/resources/dev</directory>
+                        <directory>${config.home}</directory>
                     </resource>
 
                 </resources>
@@ -269,8 +276,4 @@
         </plugins>
     </build>
 
-    <properties>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <failOnMissingWebXml>false</failOnMissingWebXml>
-    </properties>
 </project>
