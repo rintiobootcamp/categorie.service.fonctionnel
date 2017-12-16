@@ -17,7 +17,10 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
 
-
+/**
+ *
+ * @author Bello
+ */
 @RestController("PilierController")
 @RequestMapping("/piliers")
 @Api(value = "Pilier API", description = "Pilier API")
@@ -29,7 +32,13 @@ public class PilierController {
     @Autowired
     HttpServletRequest request;
 
-
+    /**
+     * Insert a pillar in the database
+     *
+     * @param pilier
+     * @return pilier
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a pilier", notes = "Create a pilier")
@@ -38,6 +47,13 @@ public class PilierController {
         return new ResponseEntity<>(pilier, HttpStatus.OK);
     }
 
+    /**
+     * Get a pillar by its id
+     *
+     * @param id
+     * @return pillar
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
@@ -50,6 +66,15 @@ public class PilierController {
         return new ResponseEntity<Pilier>(pilier, httpStatus);
     }
 
+    /**
+     * Get all the pillars of the database
+     *
+     * @return pillars list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "liste des  pilars", notes = "liste des piliers")
@@ -62,20 +87,36 @@ public class PilierController {
         return new ResponseEntity<List<Pilier>>(piliers, httpStatus);
     }
 
+    /**
+     * Update the given pillar
+     *
+     * @param pilier
+     * @return pilier
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a pilier", notes = "update a pilier")
     public ResponseEntity<Boolean> update(@RequestBody @Valid Pilier pilier) throws SQLException {
-         boolean done =  pilierService.update(pilier);
+        boolean done = pilierService.update(pilier);
         return new ResponseEntity<Boolean>(done, HttpStatus.OK);
     }
 
-
+    /**
+     * Delete a pillar by its id
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "delete Piliers", notes = "delete a particular Piliers")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
-        if(pilierService.exist(id));
+        if (pilierService.exist(id));
         boolean done = pilierService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
