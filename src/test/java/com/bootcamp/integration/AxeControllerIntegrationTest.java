@@ -5,28 +5,23 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
-import com.bootcamp.services.AxeService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.jayway.restassured.response.Response;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-import com.jayway.restassured.response.Response;
-
-
-import org.junit.Before;
 import org.testng.Assert;
-import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
-
-import static com.jayway.restassured.RestAssured.given;
 
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.lang.reflect.Type;
 import java.util.LinkedList;
 import java.util.List;
+
+import static com.jayway.restassured.RestAssured.given;
 
 
 /**
@@ -55,7 +50,7 @@ public class AxeControllerIntegrationTest {
      *The Base URI of categorie fonctionnal service,
      * it can be change with the online URIof this service.
      */
-    private String BASE_URI = "http://localhost:8082/categorie";
+    private String BASE_URI = "http://165.227.69.188:8082/categorie";
 
     /**
      * The path of the Axe controller, according to this controller implementation
@@ -68,15 +63,6 @@ public class AxeControllerIntegrationTest {
      * a error or conflit will be note by your test.
      */
     private int axeId = 0;
-
-
-   /* @BeforeTest
-    public void count() throws Exception{
-       int totalData = new AxeService().getCountAxes();
-       axeId=totalData;
-       logger.info( axeId );
-   }*/
-
 
     /**
      * This method create a new axe with the given id
@@ -96,7 +82,6 @@ public class AxeControllerIntegrationTest {
         Axe axe = getAxeById( 1 );
         axe.setId( axeId );
         axe.setNom( "axe test after the doc" );
-        axe.setSecteurs( null );
         Gson gson = new Gson();
         String axeData = gson.toJson( axe );
         Response response = given()
