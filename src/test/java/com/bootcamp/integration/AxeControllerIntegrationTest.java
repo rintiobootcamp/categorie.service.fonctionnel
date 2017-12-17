@@ -94,6 +94,7 @@ public class AxeControllerIntegrationTest {
     public void createAxe() throws Exception{
         String createURI = BASE_URI+AXE_PATH;
         Axe axe = getAxeById( 1 );
+        axe.setId( axeId );
         axe.setNom( "axe test after the doc" );
         axe.setSecteurs( null );
         Gson gson = new Gson();
