@@ -38,8 +38,7 @@ public class AxeController {
     @ApiOperation(value = "Create a axe", notes = "Create a axe")
     public ResponseEntity<Axe> create(@RequestBody @Valid Axe axe) throws Exception {
         LOG.info("Creating a new Axe : {} ", axe);
-          if(!axeService.exist(axe))
-            axe = axeService.create(axe);
+            axeService.create(axe);
         return new ResponseEntity<>(axe, HttpStatus.OK);
     }
 

@@ -197,7 +197,7 @@ public class SecteurControllerTest {
 
     public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "secteurs.json");
+        File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 

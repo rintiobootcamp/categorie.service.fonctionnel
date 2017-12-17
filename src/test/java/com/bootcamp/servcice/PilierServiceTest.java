@@ -104,7 +104,7 @@ public class PilierServiceTest {
 
     public List<Projet> getProjectsFromJson() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "projets.json");
+        File dataFile = getFile( "data-json" + File.separator + "projets.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -117,7 +117,7 @@ public class PilierServiceTest {
 
     public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "secteurs.json");
+        File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -145,7 +145,7 @@ public class PilierServiceTest {
 
     public List<Axe> loadDataAxeFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "axes.json");
+        File dataFile = getFile( "data-json" + File.separator + "axes.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -188,7 +188,7 @@ public class PilierServiceTest {
 
     public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "piliers.json");
+        File dataFile = getFile( "data-json" + File.separator + "piliers.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
