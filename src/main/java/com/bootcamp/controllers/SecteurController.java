@@ -22,6 +22,10 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 
+/**
+ *
+ * @author Bello
+ */
 @RestController("SecteurContoller")
 @RequestMapping("/secteurs")
 @Api(value = "Secteur API", description = "Secteur API")
@@ -35,6 +39,13 @@ public class SecteurController {
     @Autowired
     HttpServletRequest request;
 
+    /**
+     * Insert the given sector in the database
+     *
+     * @param secteur
+     * @return secteur
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a secteur", notes = "Create a secteur")
@@ -43,6 +54,15 @@ public class SecteurController {
         return new ResponseEntity<>(secteur, HttpStatus.OK);
     }
 
+    /**
+     * Get all the sectors of the database
+     *
+     * @return sectors list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read All Secteurs", notes = "Read aall the Secteurs")
@@ -51,14 +71,32 @@ public class SecteurController {
         return new ResponseEntity<List<Secteur>>(secteurs, HttpStatus.OK);
     }
 
+    /**
+     * Update the given sector in the database
+     *
+     * @param secteur
+     * @return sector
+     * @throws SQLException
+     */
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a secteur", notes = "update a secteur")
+
     public ResponseEntity<Boolean> update(@RequestBody Secteur secteur) throws SQLException {
         boolean done =  secteurService.update(secteur);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
+    /**
+     * Get a sector by its id
+     *
+     * @param id
+     * @return sector
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Secteurs", notes = "Read a particular Secteurs")
@@ -67,11 +105,21 @@ public class SecteurController {
         return new ResponseEntity<Secteur>(secteur, HttpStatus.OK);
     }
 
+    /**
+     * Delete a sector by its id
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "delete Secteurs", notes = "delete a particular Secteurs")
     public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
-        if(secteurService.exist(id));
+        if (secteurService.exist(id));
         boolean done = secteurService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }

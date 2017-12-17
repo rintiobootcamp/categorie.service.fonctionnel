@@ -9,7 +9,6 @@ import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.entities.Axe;
 import org.springframework.stereotype.Component;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -18,80 +17,139 @@ import java.util.List;
 /**
  * Created by darextossa on 11/27/17.
  */
-
 @Component
-public class AxeService implements DatabaseConstants{
+public class AxeService implements DatabaseConstants {
 
-    AxeCRUD axeCRUD;
-
-    @PostConstruct
-    public void init(){
-        axeCRUD = new AxeCRUD();
-    }
-
+    /**
+     * Insert the given axe in the database
+     *
+     * @param axe
+     * @return axe
+     * @throws Exception
+     */
     public Axe create(Axe axe) throws Exception {
         axe.setDateMiseAJour(System.currentTimeMillis());
-       axeCRUD.create(axe);
-      return axe;
+        AxeCRUD.create(axe);
+        return axe;
     }
 
+    /**
+     * Update the given axe in the database
+     *
+     * @param axe
+     * @return
+     * @throws SQLException
+     */
     public boolean update(Axe axe) throws SQLException {
-        axeCRUD.update(axe);
+        AxeCRUD.update(axe);
         return true;
     }
 
+    /**
+     * Delete the given axe in the database
+     *
+     * @param id
+     * @return
+     * @throws SQLException
+     */
     public boolean delete(int id) throws SQLException {
         Axe axe = read(id);
-        axeCRUD.delete(axe);
+        AxeCRUD.delete(axe);
         return true;
     }
 
+    /**
+     * Get a axe by its id
+     *
+     * @param id
+     * @return axe
+     * @throws SQLException
+     */
     public Axe read(int id) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Axe> axes = axeCRUD.read(criterias);
+        List<Axe> axes = AxeCRUD.read(criterias);
 
         return axes.get(0);
     }
 
+    /**
+     * Get a axe by its name
+     *
+     * @param nom
+     * @return axe
+     * @throws SQLException
+     */
     public Axe getByName(String nom) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("nom", "=", nom));
-        List<Axe> axes = axeCRUD.read(criterias);
+        List<Axe> axes = AxeCRUD.read(criterias);
 
         return axes.get(0);
     }
 
-
+    /**
+     * Get all the axes in the database matching the given request
+     *
+     * @param request
+     * @return axes list
+     * @throws SQLException
+     * @throws IllegalAccessException
+     * @throws DatabaseException
+     * @throws InvocationTargetException
+     */
     public List<Axe> readAll(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes = null;
-        if(criterias == null && fields == null)
-           axes =  axeCRUD.read();
-        else if(criterias!= null && fields==null)
-            axes = axeCRUD.read(criterias);
-        else if(criterias== null && fields!=null)
-            axes = axeCRUD.read(fields);
-        else
-            axes = axeCRUD.read(criterias, fields);
+        if (criterias == null && fields == null) {
+            axes = AxeCRUD.read();
+        } else if (criterias != null && fields == null) {
+            axes = AxeCRUD.read(criterias);
+        } else if (criterias == null && fields != null) {
+            axes = AxeCRUD.read(fields);
+        } else {
+            axes = AxeCRUD.read(criterias, fields);
+        }
 
         return axes;
     }
-    
-    public int getCountAxes() throws SQLException{
-        return axeCRUD.read().size();
+
+    /**
+     * Count all the axes of the database
+     *
+     * @return count
+     * @throws SQLException
+     */
+    public int getCountAxes() throws SQLException {
+        return AxeCRUD.read().size();
     }
 
-    public boolean exist(Axe axe) throws Exception{
-        if(getByName(axe.getNom())!=null)
+    /**
+     * Check if an axe exist in the database
+     *
+     * @param axe
+     * @return
+     * @throws Exception
+     */
+    public boolean exist(Axe axe) throws Exception {
+        if (getByName(axe.getNom()) != null) {
             return true;
+        }
         return false;
     }
 
-    public boolean exist(int id) throws Exception{
-        if(read(id)!=null)
+    /**
+     * Check if an axe exist
+     *
+     * @param id
+     * @return
+     * @throws Exception
+     */
+    public boolean exist(int id) throws Exception {
+        if (read(id) != null) {
             return true;
+        }
         return false;
     }
 
