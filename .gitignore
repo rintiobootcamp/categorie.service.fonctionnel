@@ -7,3 +7,6 @@ target/
 /src/main/resources/local/
 archive.zip
 nb-configuration.xml
+logs
+*.iml
+*.out
