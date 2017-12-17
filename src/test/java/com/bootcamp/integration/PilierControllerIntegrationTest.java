@@ -62,7 +62,7 @@ public class PilierControllerIntegrationTest {
      * you have to change it if you have a save data on this ID otherwise
      * a error or conflit will be note by your test.
      */
-    private int pilierId = 9;
+    private int pilierId = 0;
 
 
     /**
@@ -82,7 +82,7 @@ public class PilierControllerIntegrationTest {
         String createURI = BASE_URI+PILIER_PATH;
         Pilier pilier = getPilierById( 1 );
         pilier.setId( pilierId );
-        pilier.setNom( "assurez vous de changer chaque fois le nom" );
+        pilier.setNom( "changer toujour le nom apres chaque test" );
         pilier.setAxes( null );
         Gson gson = new Gson();
         String pilierData = gson.toJson( pilier );
@@ -94,7 +94,10 @@ public class PilierControllerIntegrationTest {
                 .when()
                 .post(createURI);
 
-                logger.debug(response.getBody().prettyPrint());
+        pilierId = gson.fromJson( response.getBody().print(),Pilier.class ).getId();
+
+
+        logger.debug(response.getBody().prettyPrint());
 
         Assert.assertEquals(response.statusCode(), 200) ;
 
@@ -147,7 +150,7 @@ public class PilierControllerIntegrationTest {
         String updateURI = BASE_URI+PILIER_PATH;
         Pilier pilier = getPilierById( 1 );
         pilier.setId( pilierId );
-        pilier.setNom( "update pilier de test integration" );
+        pilier.setNom( "update after doc impl integration" );
         pilier.setAxes( null );
         Gson gson = new Gson();
         String pilierData = gson.toJson( pilier );

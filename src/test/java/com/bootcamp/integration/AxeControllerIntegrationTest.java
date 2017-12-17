@@ -5,6 +5,7 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.services.AxeService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.gson.Gson;
@@ -14,7 +15,9 @@ import org.apache.logging.log4j.Logger;
 import com.jayway.restassured.response.Response;
 
 
+import org.junit.Before;
 import org.testng.Assert;
+import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
 import static com.jayway.restassured.RestAssured.given;
@@ -64,7 +67,15 @@ public class AxeControllerIntegrationTest {
      * you have to change it if you have a save data on this ID otherwise
      * a error or conflit will be note by your test.
      */
-    private int axeId = 10;
+    private int axeId = 0;
+
+
+   /* @BeforeTest
+    public void count() throws Exception{
+       int totalData = new AxeService().getCountAxes();
+       axeId=totalData;
+       logger.info( axeId );
+   }*/
 
 
     /**
@@ -83,8 +94,7 @@ public class AxeControllerIntegrationTest {
     public void createAxe() throws Exception{
         String createURI = BASE_URI+AXE_PATH;
         Axe axe = getAxeById( 1 );
-        axe.setId( axeId );
-        axe.setNom( "axe de test integration v2" );
+        axe.setNom( "axe test after the doc" );
         axe.setSecteurs( null );
         Gson gson = new Gson();
         String axeData = gson.toJson( axe );
@@ -96,6 +106,9 @@ public class AxeControllerIntegrationTest {
                 .when()
                 .post(createURI);
 
+        axeId = gson.fromJson( response.getBody().print(),Axe.class ).getId();
+
+        logger.debug( axeId );
                 logger.debug(response.getBody().prettyPrint());
 
         Assert.assertEquals(response.statusCode(), 200) ;
@@ -148,7 +161,7 @@ public class AxeControllerIntegrationTest {
         String updateURI = BASE_URI+AXE_PATH;
         Axe axe = getAxeById( 1 );
         axe.setId( axeId );
-        axe.setNom( "update axe de test integration v2" );
+        axe.setNom( "update axe to final test integration v2" );
         axe.setSecteurs( null );
         Gson gson = new Gson();
         String axeData = gson.toJson( axe );
@@ -211,6 +224,8 @@ public class AxeControllerIntegrationTest {
 
 
     }
+
+
 
     /**
      * Convert a relative path file into a File Object type

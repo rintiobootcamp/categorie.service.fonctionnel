@@ -61,7 +61,7 @@ public class SecteurControllerIntegrationTest {
      * you have to change it if you have a save data on this ID otherwise
      * a error or conflit will be note by your test.
      */
-    private int secteurId = 15;
+    private int secteurId = 0;
 
 
     /**
@@ -81,7 +81,7 @@ public class SecteurControllerIntegrationTest {
         String createURI = BASE_URI+SECTEUR_PATH;
         Secteur secteur = getSecteurById( 1 );
         secteur.setId( secteurId );
-        secteur.setNom( "secteur de test integration v2" );
+        secteur.setNom( "secteur change in" );
         secteur.setAxe( null );
         Gson gson = new Gson();
         String secteurData = gson.toJson( secteur );
@@ -93,7 +93,9 @@ public class SecteurControllerIntegrationTest {
                 .when()
                 .post(createURI);
 
-                logger.debug(response.getBody().prettyPrint());
+        secteurId = gson.fromJson( response.getBody().print(),Secteur.class ).getId();
+
+        logger.debug(response.getBody().prettyPrint());
 
         Assert.assertEquals(response.statusCode(), 200) ;
 
@@ -144,7 +146,7 @@ public class SecteurControllerIntegrationTest {
         String updateURI = BASE_URI+SECTEUR_PATH;
         Secteur secteur = getSecteurById( 1 );
         secteur.setId( secteurId );
-        secteur.setNom( "update secteur de test integration" );
+        secteur.setNom( "update secteur during intallation" );
         secteur.setAxe( null );
         Gson gson = new Gson();
         String secteurData = gson.toJson( secteur );
