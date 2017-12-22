@@ -7,6 +7,7 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.entities.Axe;
+import com.bootcamp.entities.Secteur;
 import org.springframework.stereotype.Component;
 
 import javax.servlet.http.HttpServletRequest;
@@ -29,6 +30,7 @@ public class AxeService implements DatabaseConstants {
      */
     public Axe create(Axe axe) throws Exception {
         axe.setDateMiseAJour(System.currentTimeMillis());
+        axe.setDateCreation(System.currentTimeMillis());
         AxeCRUD.create(axe);
         return axe;
     }
@@ -41,8 +43,8 @@ public class AxeService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Axe axe) throws SQLException {
-        AxeCRUD.update(axe);
-        return true;
+        axe.setDateMiseAJour(System.currentTimeMillis());
+        return AxeCRUD.update(axe);
     }
 
     /**
@@ -151,6 +153,51 @@ public class AxeService implements DatabaseConstants {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Link the given axe to the given sector
+     *
+     * @param idSecteur
+     * @param idAxe
+     * @return phase
+     * @throws SQLException
+     */
+    public Axe addSecteur(int idSecteur, int idAxe) throws Exception {
+        SecteurService service = new SecteurService();
+        Axe axe = this.read(idAxe);
+        Secteur secteur = service.read(idAxe);
+        
+        axe.getSecteurs().add(secteur);
+
+        this.update(axe);
+        return axe;
+    }
+
+    /**
+     * Undo the link between the given axe to the given sector
+     *
+     * @param idSecteur
+     * @param idAxe
+     * @return phase
+     * @throws SQLException
+     */
+    public Axe removeSecteur(int idSecteur, int idAxe) throws Exception {
+        SecteurService service = new SecteurService();
+        Axe axe = this.read(idAxe);
+        Secteur secteur = service.read(idSecteur);
+        int index = -1;
+        
+        for (Secteur secteur1 : axe.getSecteurs()) {
+            if (secteur1.getId()==secteur.getId()){
+                index = axe.getSecteurs().indexOf(secteur1);
+            }
+        }
+        
+        axe.getSecteurs().remove(index);
+
+        this.update(axe);
+        return axe;
     }
 
 }

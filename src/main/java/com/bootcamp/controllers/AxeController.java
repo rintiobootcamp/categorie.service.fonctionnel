@@ -65,9 +65,9 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a axe", notes = "Update a axe")
-    public ResponseEntity<Axe> update(@RequestBody Axe axe) throws Exception {
-        axe = axeService.create(axe);
-        return new ResponseEntity<>(axe, HttpStatus.OK);
+    public ResponseEntity<Boolean> update(@RequestBody Axe axe) throws Exception {
+        boolean bool = axeService.update(axe);
+        return new ResponseEntity<>(bool, HttpStatus.OK);
     }
 
     /**
@@ -138,5 +138,36 @@ public class AxeController {
 
         return new ResponseEntity<HashMap<String, Integer>>(map, HttpStatus.OK);
     }
+    
+    /**
+     * Link the given axe and the given sector
+     *
+     * @param idSecteur
+     * @param idAxe
+     * @return axe
+     * @throws SQLException
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/addSecteur/{idSecteur}/{idAxe}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Add a axe to a pillar", notes = "Add a axe to a pillar")
+    public ResponseEntity<Axe> addSecteurToAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
+        Axe axe = axeService.addSecteur(idSecteur, idAxe);
+        return new ResponseEntity<>(axe, HttpStatus.OK);
+    }
 
+    /**
+     * Undo the link between the given axe and the given sector
+     *
+     * @param idSecteur
+     * @param idAxe
+     * @return pillar
+     * @throws SQLException
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/removeSecteur/{idPilier}/{idAxe}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Remove a phase from a projet", notes = "Remove a phase from a projet")
+    public ResponseEntity<Axe> removeSecteurToAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
+        Axe axe = axeService.removeSecteur(idSecteur, idAxe);
+        return new ResponseEntity<>(axe, HttpStatus.OK);
+    }
 }
