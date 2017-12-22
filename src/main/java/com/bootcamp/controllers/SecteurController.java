@@ -81,8 +81,9 @@ public class SecteurController {
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a secteur", notes = "update a secteur")
-    public ResponseEntity<Boolean> update(@RequestBody @Valid Secteur secteur) throws SQLException {
-        boolean done = secteurService.update(secteur);
+
+    public ResponseEntity<Boolean> update(@RequestBody Secteur secteur) throws SQLException {
+        boolean done =  secteurService.update(secteur);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
 

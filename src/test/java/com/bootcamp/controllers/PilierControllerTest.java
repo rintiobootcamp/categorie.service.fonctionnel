@@ -2,7 +2,6 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.application.Application;
 import com.bootcamp.commons.utils.GsonUtils;
-import com.bootcamp.controllers.PilierController;
 
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
@@ -201,7 +200,7 @@ public class PilierControllerTest {
 
     public  List<Projet> getProjectsFromJson() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "projets.json");
+        File dataFile = getFile( "data-json" + File.separator + "projets.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -214,7 +213,7 @@ public class PilierControllerTest {
 
     public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "secteurs.json");
+        File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -249,7 +248,7 @@ public class PilierControllerTest {
 
     public List<Axe> loadDataAxeFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "axes.json");
+        File dataFile = getFile( "data-json" + File.separator + "axes.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -292,7 +291,7 @@ public class PilierControllerTest {
 
     public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "piliers.json");
+        File dataFile = getFile( "data-json" + File.separator + "piliers.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 

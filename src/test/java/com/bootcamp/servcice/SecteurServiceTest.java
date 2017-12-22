@@ -2,14 +2,11 @@ package com.bootcamp.servcice;
 
 import com.bootcamp.application.Application;
 import com.bootcamp.commons.utils.GsonUtils;
-import com.bootcamp.controllers.SecteurControllerTest;
-import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.crud.SecteurCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
-import com.bootcamp.services.AxeService;
 import com.bootcamp.services.SecteurService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -23,8 +20,6 @@ import org.powermock.api.mockito.PowerMockito;
 import org.powermock.core.classloader.annotations.PrepareForTest;
 import org.powermock.modules.junit4.PowerMockRunner;
 import org.powermock.modules.junit4.PowerMockRunnerDelegate;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
@@ -109,7 +104,7 @@ public class SecteurServiceTest {
 
     public List<Projet> getProjectsFromJson() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "projets.json");
+        File dataFile = getFile( "data-json" + File.separator + "projets.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -122,7 +117,7 @@ public class SecteurServiceTest {
 
     public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "secteurs.json");
+        File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -150,7 +145,7 @@ public class SecteurServiceTest {
 
     public List<Axe> loadDataAxeFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "axes.json");
+        File dataFile = getFile( "data-json" + File.separator + "axes.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
@@ -193,7 +188,7 @@ public class SecteurServiceTest {
 
     public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile("data-json" + File.separator + "piliers.json");
+        File dataFile = getFile( "data-json" + File.separator + "piliers.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
