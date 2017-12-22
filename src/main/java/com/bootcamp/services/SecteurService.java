@@ -28,6 +28,7 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public Secteur create(Secteur secteur) throws SQLException {
+        secteur.setDateCreation(System.currentTimeMillis());
         secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.create(secteur);
         return secteur;
@@ -41,6 +42,7 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Secteur secteur) throws SQLException {
+        secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.update(secteur);
         return true;
     }

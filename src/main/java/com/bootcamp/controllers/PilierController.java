@@ -120,4 +120,36 @@ public class PilierController {
         boolean done = pilierService.delete(id);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
+
+    /**
+     * Link the given axe and the given pillar
+     *
+     * @param idPilier
+     * @param idAxe
+     * @return pillar
+     * @throws SQLException
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/addAxe/{idPilier}/{idAxe}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Add a axe to a pillar", notes = "Add a axe to a pillar")
+    public ResponseEntity<Pilier> addAxeToPillier(@PathVariable("idPilier") int idPilier, @PathVariable("idAxe") int idAxe) throws Exception {
+        Pilier pilier = pilierService.addAxe(idAxe, idPilier);
+        return new ResponseEntity<>(pilier, HttpStatus.OK);
+    }
+
+    /**
+     * Undo the link between the given axe and the given pillar
+     *
+     * @param idPilier
+     * @param idAxe
+     * @return pillar
+     * @throws SQLException
+     */
+    @RequestMapping(method = RequestMethod.PUT, value = "/removeAxe/{idPilier}/{idAxe}")
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Remove a phase from a projet", notes = "Remove a phase from a projet")
+    public ResponseEntity<Pilier> removeAxeToPillier(@PathVariable("idPilier") int idPilier, @PathVariable("idAxe") int idAxe) throws Exception {
+        Pilier pilier = pilierService.removeAxe(idAxe, idPilier);
+        return new ResponseEntity<>(pilier, HttpStatus.OK);
+    }
 }

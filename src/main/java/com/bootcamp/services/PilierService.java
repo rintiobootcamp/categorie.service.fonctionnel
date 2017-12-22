@@ -5,6 +5,7 @@ import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.PilierCRUD;
+import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
 
@@ -54,6 +55,7 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public Pilier create(Pilier pilier) throws SQLException {
+        pilier.setDateCreation(System.currentTimeMillis());
         pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.create(pilier);
         return pilier;
@@ -67,6 +69,7 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Pilier pilier) throws SQLException {
+        pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.update(pilier);
         return true;
     }
@@ -125,6 +128,51 @@ public class PilierService implements DatabaseConstants {
             return true;
         }
         return false;
+    }
+    
+    /**
+     * Link the given axe to the given pillar
+     *
+     * @param idAxe
+     * @param idPilier
+     * @return phase
+     * @throws SQLException
+     */
+    public Pilier addAxe(int idAxe, int idPilier) throws Exception {
+        AxeService service = new AxeService();
+        Axe axe = service.read(idAxe);
+        Pilier pilier = this.read(idPilier);
+        
+        pilier.getAxes().add(axe);
+
+        this.update(pilier);
+        return pilier;
+    }
+
+    /**
+     * Undo the link between the given axe to the given pillar
+     *
+     * @param idAxe
+     * @param idPilier
+     * @return phase
+     * @throws SQLException
+     */
+    public Pilier removeAxe(int idAxe, int idPilier) throws Exception {
+        AxeService service = new AxeService();
+        Axe axe = service.read(idAxe);
+        Pilier pilier = this.read(idPilier);
+        int index = -1;
+        
+        for (Axe axe1 : pilier.getAxes()) {
+            if (axe1.getId()==axe.getId()){
+                index = pilier.getAxes().indexOf(axe1);
+            }
+        }
+        
+        pilier.getAxes().remove(index);
+
+        this.update(pilier);
+        return pilier;
     }
 
 }
