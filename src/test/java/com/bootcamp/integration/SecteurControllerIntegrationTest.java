@@ -49,7 +49,7 @@ public class SecteurControllerIntegrationTest {
      *The Base URI of categorie fonctionnal service,
      * it can be change with the online URIof this service.
      */
-    private String BASE_URI = "http://104.131.60.151/categorie";
+    private String BASE_URI = "http://localhost:8082/categorie";
 
     /**
      * The path of the Secteur controller, according to this controller implementation
@@ -97,8 +97,6 @@ public class SecteurControllerIntegrationTest {
         logger.debug(response.getBody().prettyPrint());
 
         Assert.assertEquals(response.statusCode(), 200) ;
-
-
 
     }
 

@@ -166,10 +166,10 @@ public class PilierService implements DatabaseConstants {
         for (Axe axe1 : pilier.getAxes()) {
             if (axe1.getId()==axe.getId()){
                 index = pilier.getAxes().indexOf(axe1);
+                pilier.getAxes().remove(index);
+                break;
             }
         }
-        
-        pilier.getAxes().remove(index);
 
         this.update(pilier);
         return pilier;

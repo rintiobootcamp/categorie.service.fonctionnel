@@ -22,10 +22,6 @@ import javax.validation.Valid;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.RequestBody;
 
-/**
- *
- * @author Bello
- */
 @RestController("SecteurContoller")
 @RequestMapping("/secteurs")
 @Api(value = "Secteur API", description = "Secteur API")

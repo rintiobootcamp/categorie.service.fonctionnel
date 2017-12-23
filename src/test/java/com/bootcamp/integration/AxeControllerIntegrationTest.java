@@ -63,6 +63,7 @@ public class AxeControllerIntegrationTest {
      * a error or conflit will be note by your test.
      */
     private int axeId = 0;
+    private int secteurId =0;
 
     /**
      * This method create a new axe with the given id
@@ -103,6 +104,65 @@ public class AxeControllerIntegrationTest {
 
     }
 
+
+    @Test(priority = 1, groups = {"SecteurTest"})
+    public void createSecteur() throws Exception{
+        String createURI = BASE_URI+"/secteurs";
+        Secteur secteur = getSecteurById( 1 );
+        secteur.setId( secteurId );
+        secteur.setNom( "secteur change in" );
+        Gson gson = new Gson();
+        String secteurData = gson.toJson( secteur );
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .body(secteurData)
+                .expect()
+                .when()
+                .post(createURI);
+
+        secteurId = gson.fromJson( response.getBody().print(),Secteur.class ).getId();
+
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200) ;
+
+    }
+
+    @Test(priority = 2, groups = {"AxeTest"})
+    public void addSecteurToAxe() throws Exception{
+        String addsecteurURI = BASE_URI+AXE_PATH+"/addSecteur/"+secteurId+"/"+axeId;
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .put(addsecteurURI);
+        logger.debug(response.getBody().prettyPrint());
+        Assert.assertEquals(response.statusCode(), 200) ;
+    }
+
+    /**
+     * Get All the secteurs in the database
+     * If every done , it will return a 200 httpStatus code
+     * @throws Exception
+     */
+    @Test(priority = 3, groups = {"SecteurTest"})
+    public void getAllSecteurs()throws Exception{
+        String getAllSecteurURI = BASE_URI+"/secteurs";
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .get(getAllSecteurURI);
+
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200) ;
+
+    }
+
     /**
      * This method get a axe with the given id
      * @see Axe#id
@@ -113,7 +173,7 @@ public class AxeControllerIntegrationTest {
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 1, groups = {"AxeTest"})
+    @Test(priority = 4, groups = {"AxeTest"})
     public void getAxeById() throws Exception{
 
         String getAxeById = BASE_URI+AXE_PATH+"/"+axeId;
@@ -132,6 +192,20 @@ public class AxeControllerIntegrationTest {
 
     }
 
+
+    @Test(priority = 5, groups = {"AxeTest"})
+    public void removeSecteurFromAxe() throws Exception{
+       String removesecteurURI = BASE_URI+AXE_PATH+"/removeSecteur/"+secteurId+"/"+axeId;
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .put(removesecteurURI);
+        logger.debug(response.getBody().prettyPrint());
+        Assert.assertEquals(response.statusCode(), 200) ;
+    }
+
   
     /**
      * Update a axe with the given ID
@@ -142,13 +216,12 @@ public class AxeControllerIntegrationTest {
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 2, groups = {"AxeTest"})
+    @Test(priority = 6, groups = {"AxeTest"})
     public void updateAxe() throws Exception{
         String updateURI = BASE_URI+AXE_PATH;
         Axe axe = getAxeById( 1 );
         axe.setId( axeId );
         axe.setNom( "update axe to final test integration v2" );
-        axe.setSecteurs( null );
         Gson gson = new Gson();
         String axeData = gson.toJson( axe );
         Response response = given()
@@ -172,7 +245,7 @@ public class AxeControllerIntegrationTest {
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 3, groups = {"AxeTest"})
+    @Test(priority = 7, groups = {"AxeTest"})
     public void getAllAxes()throws Exception{
         String getAllAxeURI = BASE_URI+AXE_PATH;
         Response response = given()
@@ -194,7 +267,7 @@ public class AxeControllerIntegrationTest {
      * will return a 200 httpStatus code if OK
      * @throws Exception
      */
-    @Test(priority = 4, groups = {"AxeTest"})
+    @Test(priority = 8, groups = {"AxeTest"})
     public void deleteAxe() throws Exception{
 
         String deleteAxeUI = BASE_URI+AXE_PATH+"/"+axeId;
@@ -311,79 +384,9 @@ public class AxeControllerIntegrationTest {
         Type typeOfObjectsListNew = new TypeToken<List<Axe>>() {
         }.getType();
         List<Axe> axes = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
-
-        for (int i = 0; i < axes.size(); i++) {
-            Axe axe = axes.get(i);
-            List<Secteur> secteurs = new LinkedList();
-            switch (i) {
-                case 0:
-                    secteurs.add(getSecteurById(8));
-                    break;
-                case 1:
-                    break;
-                case 2:
-                    break;
-                case 3:
-                    secteurs.add(getSecteurById(1));
-                    secteurs.add(getSecteurById(2));
-                    secteurs.add(getSecteurById(5));
-                    secteurs.add(getSecteurById(9));
-                    break;
-                case 4:
-                    secteurs.add(getSecteurById(3));
-                    break;
-                case 5:
-                    secteurs.add(getSecteurById(8));
-                    break;
-                case 6:
-                    secteurs.add(getSecteurById(6));
-                    break;
-            }
-            axe.setSecteurs(secteurs);
-        }
-
         return axes;
     }
 
 
-    /**
-     * Convert a piliers json data to a pilier objet list
-     * this json file is in resources
-     * @return a list of pilier in this json file
-     * @throws Exception
-     */
-    public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
-        //TestUtils testUtils = new TestUtils();
-        File dataFile = getFile( "data-json" + File.separator + "piliers.json");
-
-        String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
-
-        Type typeOfObjectsListNew = new TypeToken<List<Pilier>>() {
-        }.getType();
-        List<Pilier> piliers = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
-        //List<Axe> axes = axeRepository.findAll();
-        for (int i = 0; i < piliers.size(); i++) {
-            List<Axe> axes = new LinkedList();
-            Pilier pilier = piliers.get(i);
-            switch (i) {
-                case 0:
-                    axes.add(getAxeById(1));
-                    axes.add(getAxeById(2));
-                    break;
-                case 1:
-                    axes.add(getAxeById(3));
-                    axes.add(getAxeById(4));
-                    axes.add(getAxeById(5));
-                    break;
-                case 2:
-                    axes.add(getAxeById(6));
-                    axes.add(getAxeById(7));
-                    break;
-            }
-            pilier.setAxes(axes);
-        }
-
-        return piliers;
-    }
 
 }

@@ -191,10 +191,11 @@ public class AxeService implements DatabaseConstants {
         for (Secteur secteur1 : axe.getSecteurs()) {
             if (secteur1.getId()==secteur.getId()){
                 index = axe.getSecteurs().indexOf(secteur1);
+                axe.getSecteurs().remove(index);
+                break;
             }
         }
         
-        axe.getSecteurs().remove(index);
 
         this.update(axe);
         return axe;

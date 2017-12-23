@@ -63,6 +63,7 @@ public class PilierControllerIntegrationTest {
      * a error or conflit will be note by your test.
      */
     private int pilierId = 0;
+    private int axeId =0;
 
 
     /**
@@ -100,9 +101,66 @@ public class PilierControllerIntegrationTest {
 
         Assert.assertEquals(response.statusCode(), 200) ;
 
+    }
+
+    /**
+     * This method create a new axe with the given id
+     * @see Axe#id
+     * <b>you have to chenge the name of
+     * the axe if this name already exists in the database
+     * @see Axe#getNom()
+     * else, the axe  will be created but not wiht the given ID.
+     * and this will accure an error in the getById and update method</b>
+     * Note that this method will be the first to execute
+     * If every done , it will return a 200 httpStatus code
+     * @throws Exception
+     */
+
+    @Test(priority = 1, groups = {"AxeTest"})
+    public void createAxe() throws Exception{
+        String createURI = BASE_URI+"/axes";
+        Axe axe = getAxeById( 1 );
+        axe.setId( axeId );
+        axe.setNom( "axe test after the doc" );
+        Gson gson = new Gson();
+        String axeData = gson.toJson( axe );
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .body(axeData)
+                .expect()
+                .when()
+                .post(createURI);
+
+        axeId = gson.fromJson( response.getBody().print(),Axe.class ).getId();
+
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200) ;
+
 
 
     }
+
+    @Test(priority = 2, groups = {"PilierTest"})
+    public void addAxeToPilier() throws Exception{
+        String addAxeURI = BASE_URI+PILIER_PATH+"/addAxe/"+pilierId+"/"+axeId;
+
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .put(addAxeURI);
+
+        logger.debug(response.getBody().prettyPrint());
+
+        Assert.assertEquals(response.statusCode(), 200) ;
+
+    }
+
+
+
 
     /**
      * This method get a pilier with the given id
@@ -115,7 +173,7 @@ public class PilierControllerIntegrationTest {
      * @throws Exception
      */
 
-    @Test(priority = 1, groups = {"PilierTest"})
+    @Test(priority = 3, groups = {"PilierTest"})
     public void getPilierById() throws Exception{
 
         String getPilierById = BASE_URI+PILIER_PATH+"/"+pilierId;
@@ -144,13 +202,25 @@ public class PilierControllerIntegrationTest {
      * @throws Exception
      */
 
-    @Test(priority = 2, groups = {"PilierTest"})
+    @Test(priority = 4, groups = {"PilierTest"})
+    public void removeAxeToPilier() throws Exception{
+        String removeAxeURI = BASE_URI+PILIER_PATH+"/removeAxe/"+pilierId+"/"+axeId;
+        Response response = given()
+                .log().all()
+                .contentType("application/json")
+                .expect()
+                .when()
+                .put(removeAxeURI);
+        logger.debug(response.getBody().prettyPrint());
+        Assert.assertEquals(response.statusCode(), 200) ;
+    }
+
+    @Test(priority = 5, groups = {"PilierTest"})
     public void updatePilier() throws Exception{
         String updateURI = BASE_URI+PILIER_PATH;
         Pilier pilier = getPilierById( 1 );
         pilier.setId( pilierId );
         pilier.setNom( "update after doc impl integration" );
-        pilier.setAxes( null );
         Gson gson = new Gson();
         String pilierData = gson.toJson( pilier );
         Response response = given()
@@ -174,7 +244,7 @@ public class PilierControllerIntegrationTest {
      * If every done , it will return a 200 httpStatus code
      * @throws Exception
      */
-    @Test(priority = 3, groups = {"PilierTest"})
+    @Test(priority = 6, groups = {"PilierTest"})
     public void getAllPiliers()throws Exception{
         String getAllPilierURI = BASE_URI+PILIER_PATH;
         Response response = given()
@@ -196,7 +266,7 @@ public class PilierControllerIntegrationTest {
      * will return a 200 httpStatus code if OK
      * @throws Exception
      */
-    @Test(priority = 4, groups = {"PilierTest"})
+    @Test(priority = 7, groups = {"PilierTest"})
     public void deletePilier() throws Exception{
 
         String deletePilierUI = BASE_URI+PILIER_PATH+"/"+pilierId;

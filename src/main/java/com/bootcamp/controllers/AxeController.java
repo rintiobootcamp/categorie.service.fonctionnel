@@ -161,10 +161,10 @@ public class AxeController {
      * @return pillar
      * @throws SQLException
      */
-    @RequestMapping(method = RequestMethod.PUT, value = "/removeSecteur/{idPilier}/{idAxe}")
+    @RequestMapping(method = RequestMethod.PUT, value = "/removeSecteur/{idSecteur}/{idAxe}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Remove a phase from a projet", notes = "Remove a phase from a projet")
-    public ResponseEntity<Axe> removeSecteurToAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
+    public ResponseEntity<Axe> removeSecteurFromAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
         Axe axe = axeService.removeSecteur(idSecteur, idAxe);
         return new ResponseEntity<>(axe, HttpStatus.OK);
     }
