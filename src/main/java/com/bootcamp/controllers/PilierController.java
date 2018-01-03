@@ -147,7 +147,7 @@ public class PilierController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/removeAxe/{idPilier}/{idAxe}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Remove a phase from a projet", notes = "Remove a phase from a projet")
+    @ApiOperation(value = "Remove an axe from a piliar", notes = "Remove an axe from a piliar")
     public ResponseEntity<Pilier> removeAxeToPillier(@PathVariable("idPilier") int idPilier, @PathVariable("idAxe") int idAxe) throws Exception {
         Pilier pilier = pilierService.removeAxe(idAxe, idPilier);
         return new ResponseEntity<>(pilier, HttpStatus.OK);

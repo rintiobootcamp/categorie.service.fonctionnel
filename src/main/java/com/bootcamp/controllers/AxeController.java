@@ -147,7 +147,7 @@ public class AxeController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/addSecteur/{idSecteur}/{idAxe}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Add a axe to a pillar", notes = "Add a axe to a pillar")
+    @ApiOperation(value = "Add a secteur to a axe", notes = "Add a secteur to a axe")
     public ResponseEntity<Axe> addSecteurToAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
         Axe axe = axeService.addSecteur(idSecteur, idAxe);
         return new ResponseEntity<>(axe, HttpStatus.OK);
@@ -163,7 +163,7 @@ public class AxeController {
      */
     @RequestMapping(method = RequestMethod.PUT, value = "/removeSecteur/{idSecteur}/{idAxe}")
     @ApiVersions({"1.0"})
-    @ApiOperation(value = "Remove a phase from a projet", notes = "Remove a phase from a projet")
+    @ApiOperation(value = "Remove a secteur from an axe", notes = "Remove a secteur from an axe")
     public ResponseEntity<Axe> removeSecteurFromAxe(@PathVariable("idSecteur") int idSecteur, @PathVariable("idAxe") int idAxe) throws Exception {
         Axe axe = axeService.removeSecteur(idSecteur, idAxe);
         return new ResponseEntity<>(axe, HttpStatus.OK);

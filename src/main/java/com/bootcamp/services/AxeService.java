@@ -166,7 +166,7 @@ public class AxeService implements DatabaseConstants {
     public Axe addSecteur(int idSecteur, int idAxe) throws Exception {
         SecteurService service = new SecteurService();
         Axe axe = this.read(idAxe);
-        Secteur secteur = service.read(idAxe);
+        Secteur secteur = service.read(idSecteur);
         
         axe.getSecteurs().add(secteur);
 
