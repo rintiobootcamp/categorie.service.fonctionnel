@@ -59,11 +59,11 @@ public class PilierController {
     @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
     public ResponseEntity<Pilier> read(@PathVariable int id) throws SQLException {
 
-        HttpStatus httpStatus = null;
+        HttpStatus httpStatus ;
 
         Pilier pilier = pilierService.read(id);
         httpStatus = HttpStatus.OK;
-        return new ResponseEntity<Pilier>(pilier, httpStatus);
+        return new ResponseEntity<>(pilier, httpStatus);
     }
 
     /**
@@ -80,11 +80,11 @@ public class PilierController {
     @ApiOperation(value = "liste des  pilars", notes = "liste des piliers")
     public ResponseEntity<List<Pilier>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
 
-        HttpStatus httpStatus = null;
+        HttpStatus httpStatus ;
 
         List<Pilier> piliers = pilierService.getAll();
         httpStatus = HttpStatus.OK;
-        return new ResponseEntity<List<Pilier>>(piliers, httpStatus);
+        return new ResponseEntity<>(piliers, httpStatus);
     }
 
     /**
@@ -99,7 +99,7 @@ public class PilierController {
     @ApiOperation(value = "Update a pilier", notes = "update a pilier")
     public ResponseEntity<Boolean> update(@RequestBody @Valid Pilier pilier) throws SQLException {
         boolean done = pilierService.update(pilier);
-        return new ResponseEntity<Boolean>(done, HttpStatus.OK);
+        return new ResponseEntity<>(done, HttpStatus.OK);
     }
 
     /**

@@ -82,7 +82,7 @@ public class AxeController {
     @ApiOperation(value = "Read a axe", notes = "Read a axe")
     public ResponseEntity<List<Axe>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
         List<Axe> axes = axeService.readAll(request);
-        return new ResponseEntity<List<Axe>>(axes, HttpStatus.OK);
+        return new ResponseEntity<>(axes, HttpStatus.OK);
     }
 
     /**
@@ -98,7 +98,7 @@ public class AxeController {
     public ResponseEntity<Axe> read(@PathVariable(name = "id") int id) throws SQLException {
 
         Axe axe = axeService.read(id);
-        return new ResponseEntity<Axe>(axe, HttpStatus.OK);
+        return new ResponseEntity<>(axe, HttpStatus.OK);
     }
 
     /**
@@ -134,7 +134,7 @@ public class AxeController {
         HashMap<String, Integer> map = new HashMap<>();
         map.put(CommonsWsConstants.MAP_COUNT_KEY, count);
 
-        return new ResponseEntity<HashMap<String, Integer>>(map, HttpStatus.OK);
+        return new ResponseEntity<>(map, HttpStatus.OK);
     }
     
     /**

@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
-
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -64,7 +63,7 @@ public class SecteurController {
     @ApiOperation(value = "Read All Secteurs", notes = "Read aall the Secteurs")
     public ResponseEntity<List<Secteur>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         List<Secteur> secteurs = secteurService.read(request);
-        return new ResponseEntity<List<Secteur>>(secteurs, HttpStatus.OK);
+        return new ResponseEntity<>(secteurs, HttpStatus.OK);
     }
 
     /**
@@ -98,7 +97,7 @@ public class SecteurController {
     @ApiOperation(value = "Get one Secteurs", notes = "Read a particular Secteurs")
     public ResponseEntity<Secteur> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Secteur secteur = secteurService.read(id);
-        return new ResponseEntity<Secteur>(secteur, HttpStatus.OK);
+        return new ResponseEntity<>(secteur, HttpStatus.OK);
     }
 
     /**

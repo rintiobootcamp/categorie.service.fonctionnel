@@ -9,7 +9,6 @@ import com.bootcamp.crud.AxeCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -20,7 +19,6 @@ import java.util.List;
  */
 @Component
 public class AxeService implements DatabaseConstants {
-
     /**
      * Insert the given axe in the database
      *
@@ -29,12 +27,11 @@ public class AxeService implements DatabaseConstants {
      * @throws Exception
      */
     public Axe create(Axe axe) throws Exception {
-        axe.setDateMiseAJour(System.currentTimeMillis());
         axe.setDateCreation(System.currentTimeMillis());
+        axe.setDateMiseAJour(System.currentTimeMillis());
         AxeCRUD.create(axe);
         return axe;
     }
-
     /**
      * Update the given axe in the database
      *
@@ -43,10 +40,14 @@ public class AxeService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Axe axe) throws SQLException {
+//        int id = axe.getId();
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+//        Axe axesToUpdate = AxeCRUD.read(criterias).get(0);
+//        axe.setDateCreation(axesToUpdate.getDateCreation());
         axe.setDateMiseAJour(System.currentTimeMillis());
         return AxeCRUD.update(axe);
     }
-
     /**
      * Delete the given axe in the database
      *
@@ -86,7 +87,6 @@ public class AxeService implements DatabaseConstants {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("nom", "=", nom));
         List<Axe> axes = AxeCRUD.read(criterias);
-
         return axes.get(0);
     }
 
@@ -103,7 +103,7 @@ public class AxeService implements DatabaseConstants {
     public List<Axe> readAll(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
-        List<Axe> axes = null;
+        List<Axe> axes ;
         if (criterias == null && fields == null) {
             axes = AxeCRUD.read();
         } else if (criterias != null && fields == null) {
@@ -113,7 +113,6 @@ public class AxeService implements DatabaseConstants {
         } else {
             axes = AxeCRUD.read(criterias, fields);
         }
-
         return axes;
     }
 
@@ -135,10 +134,7 @@ public class AxeService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(Axe axe) throws Exception {
-        if (getByName(axe.getNom()) != null) {
-            return true;
-        }
-        return false;
+        return getByName(axe.getNom()) != null;
     }
 
     /**
@@ -149,12 +145,9 @@ public class AxeService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(int id) throws Exception {
-        if (read(id) != null) {
-            return true;
-        }
-        return false;
+        return read(id) != null;
     }
-    
+
     /**
      * Link the given axe to the given sector
      *
@@ -167,9 +160,7 @@ public class AxeService implements DatabaseConstants {
         SecteurService service = new SecteurService();
         Axe axe = this.read(idAxe);
         Secteur secteur = service.read(idSecteur);
-        
         axe.getSecteurs().add(secteur);
-
         this.update(axe);
         return axe;
     }
@@ -186,19 +177,15 @@ public class AxeService implements DatabaseConstants {
         SecteurService service = new SecteurService();
         Axe axe = this.read(idAxe);
         Secteur secteur = service.read(idSecteur);
-        int index = -1;
-        
+        int index;
         for (Secteur secteur1 : axe.getSecteurs()) {
-            if (secteur1.getId()==secteur.getId()){
+            if (secteur1.getId() == secteur.getId()) {
                 index = axe.getSecteurs().indexOf(secteur1);
                 axe.getSecteurs().remove(index);
                 break;
             }
         }
-        
-
         this.update(axe);
         return axe;
     }
-
 }

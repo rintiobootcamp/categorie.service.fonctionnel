@@ -8,7 +8,6 @@ import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import org.springframework.stereotype.Component;
-
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -69,6 +68,11 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Pilier pilier) throws SQLException {
+        int id = pilier.getId();
+        Criterias criterias  = new Criterias();
+        criterias.addCriteria(new Criteria("id","=",id));
+        Pilier pilierToUpdate = PilierCRUD.read(criterias).get(0);
+        pilier.setDateCreation(pilierToUpdate.getDateCreation());
         pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.update(pilier);
         return true;
@@ -110,10 +114,7 @@ public class PilierService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(Pilier pilier) throws Exception {
-        if (getByName(pilier.getNom()) != null) {
-            return true;
-        }
-        return false;
+        return getByName(pilier.getNom()) != null;
     }
 
     /**
@@ -124,10 +125,7 @@ public class PilierService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(int id) throws Exception {
-        if (read(id) != null) {
-            return true;
-        }
-        return false;
+        return read(id) != null;
     }
     
     /**
@@ -161,8 +159,7 @@ public class PilierService implements DatabaseConstants {
         AxeService service = new AxeService();
         Axe axe = service.read(idAxe);
         Pilier pilier = this.read(idPilier);
-        int index = -1;
-        
+        int index;
         for (Axe axe1 : pilier.getAxes()) {
             if (axe1.getId()==axe.getId()){
                 index = pilier.getAxes().indexOf(axe1);
@@ -170,7 +167,6 @@ public class PilierService implements DatabaseConstants {
                 break;
             }
         }
-
         this.update(pilier);
         return pilier;
     }

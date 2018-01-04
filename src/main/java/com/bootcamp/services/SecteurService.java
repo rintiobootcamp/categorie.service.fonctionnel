@@ -8,7 +8,6 @@ import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.SecteurCRUD;
 import com.bootcamp.entities.Secteur;
 import org.springframework.stereotype.Component;
-
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -42,6 +41,11 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean update(Secteur secteur) throws SQLException {
+        int id = secteur.getId();
+        Criterias criterias = new  Criterias();
+        criterias.addCriteria(new Criteria("id","=",id));
+        Secteur secteurToUpDate = SecteurCRUD.read(criterias).get(0);
+        secteur.setDateCreation(secteurToUpDate.getDateCreation());
         secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.update(secteur);
         return true;
@@ -88,7 +92,7 @@ public class SecteurService implements DatabaseConstants {
     public List<Secteur> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
-        List<Secteur> secteurs = null;
+        List<Secteur> secteurs;
         if (criterias == null && fields == null) {
             secteurs = SecteurCRUD.read();
         } else if (criterias != null && fields == null) {
@@ -125,10 +129,7 @@ public class SecteurService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(Secteur secteur) throws Exception {
-        if (getByName(secteur.getNom()) != null) {
-            return true;
-        }
-        return false;
+        return getByName(secteur.getNom()) != null;
     }
 
     /**
@@ -139,10 +140,7 @@ public class SecteurService implements DatabaseConstants {
      * @throws Exception
      */
     public boolean exist(int id) throws Exception {
-        if (read(id) != null) {
-            return true;
-        }
-        return false;
+        return read(id) != null;
     }
 
 }
