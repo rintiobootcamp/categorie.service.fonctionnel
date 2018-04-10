@@ -6,9 +6,7 @@
 package com.bootcamp.helpers;
 
 import com.bootcamp.entities.Axe;
-import com.bootcamp.entities.Secteur;
 import com.bootcamp.pivots.AxeWS;
-import com.bootcamp.pivots.SecteurWS;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -28,6 +26,7 @@ public class AxeHelper {
         axeWS.setDateMiseAJour(axe.getDateMiseAJour());
         axeWS.setTitre(axe.getTitre());
         axeWS.setTitreFocus(axe.getTitreFocus());
+        axeWS.setDescriptionFocus(axe.getDescriptionFocus());
         axeWS.setSecteurs(helper.getListSecteurWS(axe.getSecteurs()));
 
         return axeWS;
@@ -42,6 +41,7 @@ public class AxeHelper {
         axe.setDateCreation(axeWS.getDateCreation());
         axe.setDateMiseAJour(axeWS.getDateMiseAJour());
         axe.setTitre(axeWS.getTitre());
+        axe.setDescriptionFocus(axeWS.getDescriptionFocus());
         axe.setTitreFocus(axeWS.getTitreFocus());
         axe.setSecteurs(helper.getListSecteur(axeWS.getSecteurs()));
 
