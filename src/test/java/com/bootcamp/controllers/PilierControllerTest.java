@@ -7,6 +7,9 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.pivots.AxeWS;
+import com.bootcamp.pivots.PilierWS;
+import com.bootcamp.pivots.SecteurWS;
 import com.bootcamp.services.PilierService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
@@ -63,7 +66,7 @@ public class PilierControllerTest {
 
     @Test
     public void getAllPilier() throws Exception{
-        List<Pilier> piliers =  loadDataPilierFromJsonFile();
+        List<PilierWS> piliers =  loadDataPilierFromJsonFile();
         //Mockito.mock(PilierCRUD.class);
         Mockito.
                 when(pilierService.getAll()).thenReturn(piliers);
@@ -87,7 +90,7 @@ public class PilierControllerTest {
     @Test
     public void getPilierById() throws Exception{
         int id = 1;
-        Pilier pilier = getPilierDataById(id);
+        PilierWS pilier = getPilierDataById(id);
         Mockito.
                 when(pilierService.read(id)).thenReturn(pilier);
 
@@ -107,8 +110,8 @@ public class PilierControllerTest {
 
     @Test
     public void createPilier() throws Exception{
-        List<Pilier> piliers =  loadDataPilierFromJsonFile();
-        Pilier pilier = piliers.get(0);
+        List<PilierWS> piliers =  loadDataPilierFromJsonFile();
+        PilierWS pilier = piliers.get(0);
 
         Mockito.when(pilierService.exist(pilier)).thenReturn(false);
                 when(pilierService.create(pilier)).thenReturn(pilier);
@@ -130,8 +133,8 @@ public class PilierControllerTest {
 
     @Test
     public void updatePilier() throws Exception{
-        List<Pilier> piliers =  loadDataPilierFromJsonFile();
-        Pilier pilier = piliers.get(0);
+        List<PilierWS> piliers =  loadDataPilierFromJsonFile();
+        PilierWS pilier = piliers.get(0);
         pilier.setNom("pilier update");
         Mockito.
                 when(pilierService.exist(pilier.getId())).thenReturn(true);
@@ -211,42 +214,42 @@ public class PilierControllerTest {
         return projets;
     }
 
-    public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
+    public List<SecteurWS> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
         File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
-        Type typeOfObjectsListNew = new TypeToken<List<Secteur>>() {
+        Type typeOfObjectsListNew = new TypeToken<List<SecteurWS>>() {
         }.getType();
-        List<Secteur> secteurs = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
+        List<SecteurWS> secteurs = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
 
         return secteurs;
     }
 
-    private Secteur getSecteurById(int id) throws Exception {
-        List<Secteur> secteurs = loadDataSecteurFromJsonFile();
-        Secteur secteur = secteurs.stream().filter(item->item.getId()==id).findFirst().get();
+    private SecteurWS getSecteurById(int id) throws Exception {
+        List<SecteurWS> secteurs = loadDataSecteurFromJsonFile();
+        SecteurWS secteur = secteurs.stream().filter(item->item.getId()==id).findFirst().get();
 
         return secteur;
     }
 
-    public Axe getAxeById(int id) throws Exception {
-        List<Axe> axes = loadDataAxeFromJsonFile();
-        Axe axe = axes.stream().filter(item->item.getId()==id).findFirst().get();
+    public AxeWS getAxeById(int id) throws Exception {
+        List<AxeWS> axes = loadDataAxeFromJsonFile();
+        AxeWS axe = axes.stream().filter(item->item.getId()==id).findFirst().get();
 
         return axe;
     }
 
-    public Pilier getPilierDataById(int id) throws Exception {
-        List<Pilier> piliers = loadDataPilierFromJsonFile();
-        Pilier pilier = piliers.stream().filter(item->item.getId()==id).findFirst().get();
+    public PilierWS getPilierDataById(int id) throws Exception {
+        List<PilierWS> piliers = loadDataPilierFromJsonFile();
+        PilierWS pilier = piliers.stream().filter(item->item.getId()==id).findFirst().get();
 
         return pilier;
     }
 
 
-    public List<Axe> loadDataAxeFromJsonFile() throws Exception {
+    public List<AxeWS> loadDataAxeFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
         File dataFile = getFile( "data-json" + File.separator + "axes.json");
 
@@ -254,11 +257,11 @@ public class PilierControllerTest {
 
         Type typeOfObjectsListNew = new TypeToken<List<Axe>>() {
         }.getType();
-        List<Axe> axes = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
+        List<AxeWS> axes = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
 
         for (int i = 0; i < axes.size(); i++) {
-            Axe axe = axes.get(i);
-            List<Secteur> secteurs = new LinkedList();
+            AxeWS axe = axes.get(i);
+            List<SecteurWS> secteurs = new LinkedList();
             switch (i) {
                 case 0:
                     secteurs.add(getSecteurById(8));
@@ -289,7 +292,7 @@ public class PilierControllerTest {
         return axes;
     }
 
-    public List<Pilier> loadDataPilierFromJsonFile() throws Exception {
+    public List<PilierWS> loadDataPilierFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
         File dataFile = getFile( "data-json" + File.separator + "piliers.json");
 
@@ -297,11 +300,11 @@ public class PilierControllerTest {
 
         Type typeOfObjectsListNew = new TypeToken<List<Pilier>>() {
         }.getType();
-        List<Pilier> piliers = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
+        List<PilierWS> piliers = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
         //List<Axe> axes = axeRepository.findAll();
         for (int i = 0; i < piliers.size(); i++) {
-            List<Axe> axes = new LinkedList();
-            Pilier pilier = piliers.get(i);
+            List<AxeWS> axes = new LinkedList();
+            PilierWS pilier = piliers.get(i);
             switch (i) {
                 case 0:
                     axes.add(getAxeById(1));

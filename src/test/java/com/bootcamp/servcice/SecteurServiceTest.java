@@ -7,6 +7,7 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.pivots.SecteurWS;
 import com.bootcamp.services.SecteurService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -55,7 +56,7 @@ public class SecteurServiceTest {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.
                 when(SecteurCRUD.read()).thenReturn(secteurs);
-        List<Secteur> resultSecteurs = secteurService.read(mockRequest);
+        List<SecteurWS> resultSecteurs = secteurService.read(mockRequest);
         Assert.assertEquals(secteurs.size(), resultSecteurs.size());
 
     }

@@ -4,6 +4,7 @@ package com.bootcamp.controllers;
 import com.bootcamp.application.Application;
 import com.bootcamp.commons.utils.GsonUtils;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.pivots.SecteurWS;
 import com.bootcamp.services.SecteurService;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.base.Charsets;
@@ -54,7 +55,7 @@ public class SecteurControllerTest {
     @Test
     public void getSecteurs() throws Exception{
         LOG.info("Testing get all secteurs test method ");
-        List<Secteur> secteurs =  loadDataSecteurFromJsonFile();
+        List<SecteurWS> secteurs =  loadDataSecteurFromJsonFile();
         System.out.println(secteurs.size());
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.
@@ -79,7 +80,7 @@ public class SecteurControllerTest {
         LOG.info("Testing get secteur by id  method ");
 
         int id = 1;
-        Secteur secteur = getSecteurById(id);
+        SecteurWS secteur = getSecteurById(id);
 
         Mockito.
                 when(secteurService.read(id)).thenReturn(secteur);
@@ -177,9 +178,9 @@ public class SecteurControllerTest {
         }
     }
 
-    private Secteur getSecteurById(int id) throws Exception {
-        List<Secteur> secteurs = loadDataSecteurFromJsonFile();
-        Secteur secteur = secteurs.stream().filter(item->item.getId()==id).findFirst().get();
+    private SecteurWS getSecteurById(int id) throws Exception {
+        List<SecteurWS> secteurs = loadDataSecteurFromJsonFile();
+        SecteurWS secteur = secteurs.stream().filter(item->item.getId()==id).findFirst().get();
 
         return secteur;
     }
@@ -195,15 +196,15 @@ public class SecteurControllerTest {
         return file;
     }
 
-    public List<Secteur> loadDataSecteurFromJsonFile() throws Exception {
+    public List<SecteurWS> loadDataSecteurFromJsonFile() throws Exception {
         //TestUtils testUtils = new TestUtils();
         File dataFile = getFile( "data-json" + File.separator + "secteurs.json");
 
         String text = Files.toString(new File(dataFile.getAbsolutePath()), Charsets.UTF_8);
 
-        Type typeOfObjectsListNew = new TypeToken<List<Secteur>>() {
+        Type typeOfObjectsListNew = new TypeToken<List<SecteurWS>>() {
         }.getType();
-        List<Secteur> secteurs = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
+        List<SecteurWS> secteurs = GsonUtils.getObjectFromJson(text, typeOfObjectsListNew);
 
         return secteurs;
     }

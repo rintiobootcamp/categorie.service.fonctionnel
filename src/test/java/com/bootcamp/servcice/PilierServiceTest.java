@@ -7,6 +7,7 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.pivots.PilierWS;
 import com.bootcamp.services.PilierService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -54,7 +55,7 @@ public class PilierServiceTest {
         PowerMockito.mockStatic(PilierCRUD.class);
         Mockito.
                 when(PilierCRUD.read()).thenReturn(piliers);
-        List<Pilier> resultPiliers = pilierService.getAll();
+        List<PilierWS> resultPiliers = pilierService.getAll();
         Assert.assertEquals(piliers.size(), resultPiliers.size());
 
     }

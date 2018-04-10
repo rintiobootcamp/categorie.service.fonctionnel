@@ -3,6 +3,7 @@ package com.bootcamp.controllers;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.ws.constants.CommonsWsConstants;
 import com.bootcamp.entities.Axe;
+import com.bootcamp.pivots.AxeWS;
 import com.bootcamp.services.AxeService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
@@ -80,8 +81,8 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a axe", notes = "Read a axe")
-    public ResponseEntity<List<Axe>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
-        List<Axe> axes = axeService.readAll(request);
+    public ResponseEntity<List<AxeWS>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+        List<AxeWS> axes = axeService.readAll(request);
         return new ResponseEntity<>(axes, HttpStatus.OK);
     }
 
@@ -95,9 +96,9 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a specific axe", notes = "Read a specific axe")
-    public ResponseEntity<Axe> read(@PathVariable(name = "id") int id) throws SQLException {
+    public ResponseEntity<AxeWS> read(@PathVariable(name = "id") int id) throws SQLException {
 
-        Axe axe = axeService.read(id);
+        AxeWS axe = axeService.read(id);
         return new ResponseEntity<>(axe, HttpStatus.OK);
     }
 

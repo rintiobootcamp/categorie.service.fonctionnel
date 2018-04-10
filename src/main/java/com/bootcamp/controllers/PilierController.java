@@ -2,6 +2,7 @@ package com.bootcamp.controllers;
 
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.entities.Pilier;
+import com.bootcamp.pivots.PilierWS;
 import com.bootcamp.services.PilierService;
 import com.bootcamp.version.ApiVersions;
 import io.swagger.annotations.Api;
@@ -57,11 +58,11 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-    public ResponseEntity<Pilier> read(@PathVariable int id) throws SQLException {
+    public ResponseEntity<PilierWS> read(@PathVariable int id) throws SQLException {
 
         HttpStatus httpStatus ;
 
-        Pilier pilier = pilierService.read(id);
+        PilierWS pilier = pilierService.read(id);
         httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(pilier, httpStatus);
     }
@@ -78,11 +79,11 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "liste des  pilars", notes = "liste des piliers")
-    public ResponseEntity<List<Pilier>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<List<PilierWS>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
 
         HttpStatus httpStatus ;
 
-        List<Pilier> piliers = pilierService.getAll();
+        List<PilierWS> piliers = pilierService.getAll();
         httpStatus = HttpStatus.OK;
         return new ResponseEntity<>(piliers, httpStatus);
     }

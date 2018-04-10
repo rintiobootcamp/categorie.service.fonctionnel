@@ -8,6 +8,7 @@ import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Projet;
 import com.bootcamp.entities.Secteur;
+import com.bootcamp.pivots.AxeWS;
 import com.bootcamp.services.AxeService;
 import com.google.common.base.Charsets;
 import com.google.common.io.Files;
@@ -59,7 +60,7 @@ public class AxeServiceTest {
         HttpServletRequest mockRequest = Mockito.mock(HttpServletRequest.class);
         Mockito.
                 when(AxeCRUD.read()).thenReturn(axes);
-        List<Axe> resultAxes = axeService.readAll(mockRequest);
+        List<AxeWS> resultAxes = axeService.readAll(mockRequest);
         Assert.assertEquals(axes.size(), resultAxes.size());
         LOG.info(" get all axe test done");
 

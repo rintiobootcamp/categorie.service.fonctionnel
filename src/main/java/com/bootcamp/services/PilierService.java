@@ -7,6 +7,9 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
+import com.bootcamp.helpers.AxeHelper;
+import com.bootcamp.helpers.PilierHelper;
+import com.bootcamp.pivots.PilierWS;
 import org.springframework.stereotype.Component;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -25,12 +28,13 @@ public class PilierService implements DatabaseConstants {
      * @return pillar
      * @throws SQLException
      */
-    public Pilier read(int id) throws SQLException {
+    public PilierWS read(int id) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
         List<Pilier> piliers = PilierCRUD.read(criterias);
+        PilierHelper helper = new PilierHelper();
 
-        return piliers.get(0);
+        return helper.convertPilierToPilierWS(piliers.get(0));
     }
 
     /**
@@ -42,8 +46,9 @@ public class PilierService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<Pilier> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
-        return PilierCRUD.read();
+    public List<PilierWS> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+        PilierHelper helper = new PilierHelper();
+        return helper.getListPilierWS(PilierCRUD.read());
     }
 
     /**
@@ -69,8 +74,8 @@ public class PilierService implements DatabaseConstants {
      */
     public boolean update(Pilier pilier) throws SQLException {
         int id = pilier.getId();
-        Criterias criterias  = new Criterias();
-        criterias.addCriteria(new Criteria("id","=",id));
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("id", "=", id));
         Pilier pilierToUpdate = PilierCRUD.read(criterias).get(0);
         pilier.setDateCreation(pilierToUpdate.getDateCreation());
         pilier.setDateMiseAJour(System.currentTimeMillis());
@@ -86,7 +91,8 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public boolean delete(int id) throws SQLException {
-        Pilier pilier = read(id);
+        PilierHelper helper = new PilierHelper();
+        Pilier pilier = helper.convertPilierWSToPilier(read(id));
         PilierCRUD.delete(pilier);
         return true;
     }
@@ -98,12 +104,13 @@ public class PilierService implements DatabaseConstants {
      * @return pillar
      * @throws SQLException
      */
-    public Pilier getByName(String nom) throws SQLException {
+    public PilierWS getByName(String nom) throws SQLException {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("nom", "=", nom));
         List<Pilier> piliers = PilierCRUD.read(criterias);
+        PilierHelper helper = new PilierHelper();
 
-        return piliers.get(0);
+        return helper.convertPilierToPilierWS(piliers.get(0));
     }
 
     /**
@@ -127,7 +134,7 @@ public class PilierService implements DatabaseConstants {
     public boolean exist(int id) throws Exception {
         return read(id) != null;
     }
-    
+
     /**
      * Link the given axe to the given pillar
      *
@@ -138,9 +145,11 @@ public class PilierService implements DatabaseConstants {
      */
     public Pilier addAxe(int idAxe, int idPilier) throws Exception {
         AxeService service = new AxeService();
-        Axe axe = service.read(idAxe);
-        Pilier pilier = this.read(idPilier);
-        
+        AxeHelper axeHelper = new AxeHelper();
+        Axe axe = axeHelper.convertAxeWSToAxe(service.read(idAxe));
+        PilierHelper helper = new PilierHelper();
+        Pilier pilier = helper.convertPilierWSToPilier(read(idPilier));
+
         pilier.getAxes().add(axe);
 
         this.update(pilier);
@@ -157,11 +166,14 @@ public class PilierService implements DatabaseConstants {
      */
     public Pilier removeAxe(int idAxe, int idPilier) throws Exception {
         AxeService service = new AxeService();
-        Axe axe = service.read(idAxe);
-        Pilier pilier = this.read(idPilier);
+        AxeHelper axeHelper = new AxeHelper();
+        Axe axe = axeHelper.convertAxeWSToAxe(service.read(idAxe));
+        PilierHelper helper = new PilierHelper();
+        Pilier pilier = helper.convertPilierWSToPilier(read(idPilier));
+        
         int index;
         for (Axe axe1 : pilier.getAxes()) {
-            if (axe1.getId()==axe.getId()){
+            if (axe1.getId() == axe.getId()) {
                 index = pilier.getAxes().indexOf(axe1);
                 pilier.getAxes().remove(index);
                 break;
