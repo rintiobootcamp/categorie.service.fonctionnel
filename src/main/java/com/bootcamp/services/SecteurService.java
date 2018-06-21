@@ -5,11 +5,15 @@ import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
+import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.crud.SecteurCRUD;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.helpers.SecteurHelper;
 import com.bootcamp.pivots.SecteurWS;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -20,6 +24,24 @@ import java.util.List;
  */
 @Component
 public class SecteurService implements DatabaseConstants {
+    List<Secteur> secteurs = null;
+
+    @PostConstruct
+    public void init(){
+        try {
+            this.secteurs = SecteurCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+    @Scheduled(fixedRate = 750000)
+    public void getAllProjetInit(){
+        try {
+            this.secteurs = SecteurCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Insert the given sector in the database
@@ -75,12 +97,12 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public SecteurWS read(int id) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
-        List<Secteur> secteurs = SecteurCRUD.read(criterias);
-
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+//        List<Secteur> secteurs = SecteurCRUD.read(criterias);
+        Secteur secteur = this.secteurs.stream().filter(t->t.getId()==id).findFirst().get();
         SecteurHelper helper = new SecteurHelper();
-        return helper.convertSecteurToSecteurWS(secteurs.get(0));
+        return helper.convertSecteurToSecteurWS(secteur);
     }
 
     /**
@@ -98,7 +120,7 @@ public class SecteurService implements DatabaseConstants {
         List<String> fields = RequestParser.getFields(request);
         List<Secteur> secteurs;
         if (criterias == null && fields == null) {
-            secteurs = SecteurCRUD.read();
+            secteurs = this.secteurs;
         } else if (criterias != null && fields == null) {
             secteurs = SecteurCRUD.read(criterias);
         } else if (criterias == null && fields != null) {

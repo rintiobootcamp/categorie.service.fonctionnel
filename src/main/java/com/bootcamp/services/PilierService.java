@@ -4,13 +4,19 @@ import com.bootcamp.commons.constants.DatabaseConstants;
 import com.bootcamp.commons.exceptions.DatabaseException;
 import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
+import com.bootcamp.crud.PhaseCRUD;
 import com.bootcamp.crud.PilierCRUD;
+import com.bootcamp.crud.ProjetCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Pilier;
+import com.bootcamp.entities.Projet;
 import com.bootcamp.helpers.AxeHelper;
 import com.bootcamp.helpers.PilierHelper;
 import com.bootcamp.pivots.PilierWS;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.List;
@@ -20,6 +26,25 @@ import java.util.List;
  */
 @Component
 public class PilierService implements DatabaseConstants {
+    List<Pilier> piliers = null;
+    @PostConstruct
+    public void init(){
+        try {
+            this.piliers = PilierCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(fixedRate = 750000)
+    public void getAllProjetInit(){
+        try {
+            this.piliers = PilierCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     /**
      * Get a pillar by its id
@@ -29,12 +54,12 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public PilierWS read(int id) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
-        List<Pilier> piliers = PilierCRUD.read(criterias);
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+//        List<Pilier> piliers = PilierCRUD.read(criterias);
         PilierHelper helper = new PilierHelper();
-
-        return helper.convertPilierToPilierWS(piliers.get(0));
+        Pilier pilier = this.piliers.stream().filter(t->t.getId()==id).findFirst().get();
+        return helper.convertPilierToPilierWS(pilier);
     }
 
     /**
@@ -48,7 +73,7 @@ public class PilierService implements DatabaseConstants {
      */
     public List<PilierWS> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         PilierHelper helper = new PilierHelper();
-        return helper.getListPilierWS(PilierCRUD.read());
+        return helper.getListPilierWS(this.piliers);
     }
 
     /**

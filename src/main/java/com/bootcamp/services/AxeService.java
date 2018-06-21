@@ -6,12 +6,16 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.AxeCRUD;
+import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.helpers.AxeHelper;
 import com.bootcamp.helpers.SecteurHelper;
 import com.bootcamp.pivots.AxeWS;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
@@ -22,6 +26,25 @@ import java.util.List;
  */
 @Component
 public class AxeService implements DatabaseConstants {
+
+    List<Axe> axes = null;
+    @PostConstruct
+    public void init(){
+        try {
+            this.axes = AxeCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Scheduled(fixedRate = 750000)
+    public void getAllProjetInit(){
+        try {
+            this.axes = AxeCRUD.read();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 
     /**
      * Insert the given axe in the database
@@ -76,12 +99,13 @@ public class AxeService implements DatabaseConstants {
      * @throws SQLException
      */
     public AxeWS read(int id) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
-        List<Axe> axes = AxeCRUD.read(criterias);
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+//        List<Axe> axes = AxeCRUD.read(criterias);
         AxeHelper helper = new AxeHelper();
+        Axe axe = this.axes.stream().filter(t->t.getId()==id).findFirst().get();
 
-        return helper.convertAxeToAxeWS(axes.get(0));
+        return helper.convertAxeToAxeWS(axe);
     }
 
     /**
@@ -114,7 +138,7 @@ public class AxeService implements DatabaseConstants {
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes;
         if (criterias == null && fields == null) {
-            axes = AxeCRUD.read();
+            axes = this.axes;
         } else if (criterias != null && fields == null) {
             axes = AxeCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
