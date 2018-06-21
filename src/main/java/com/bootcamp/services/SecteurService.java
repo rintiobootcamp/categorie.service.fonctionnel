@@ -25,15 +25,6 @@ import java.util.List;
 @Component
 public class SecteurService implements DatabaseConstants {
     List<Secteur> secteurs = null;
-
-    @PostConstruct
-    public void init(){
-        try {
-            this.secteurs = SecteurCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
     @Scheduled(fixedRate = 750000)
     public void getAllProjetInit(){
         try {

@@ -27,14 +27,6 @@ import java.util.List;
 @Component
 public class PilierService implements DatabaseConstants {
     List<Pilier> piliers = null;
-    @PostConstruct
-    public void init(){
-        try {
-            this.piliers = PilierCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Scheduled(fixedRate = 750000)
     public void getAllProjetInit(){

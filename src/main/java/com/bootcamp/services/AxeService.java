@@ -28,14 +28,6 @@ import java.util.List;
 public class AxeService implements DatabaseConstants {
 
     List<Axe> axes = null;
-    @PostConstruct
-    public void init(){
-        try {
-            this.axes = AxeCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Scheduled(fixedRate = 750000)
     public void getAllProjetInit(){
