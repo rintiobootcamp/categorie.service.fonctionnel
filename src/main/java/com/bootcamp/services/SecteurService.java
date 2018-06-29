@@ -24,15 +24,15 @@ import java.util.List;
  */
 @Component
 public class SecteurService implements DatabaseConstants {
-    List<Secteur> secteurs = null;
-    @Scheduled(fixedRate = 750000)
-    public void getAllProjetInit(){
-        try {
-            this.secteurs = SecteurCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    List<Secteur> secteurs = null;
+//    @Scheduled(fixedRate = 750000)
+//    public void getAllProjetInit(){
+//        try {
+//            this.secteurs = SecteurCRUD.read();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * Insert the given sector in the database
@@ -88,12 +88,11 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public SecteurWS read(int id) throws SQLException {
-//        Criterias criterias = new Criterias();
-//        criterias.addCriteria(new Criteria("id", "=", id));
-//        List<Secteur> secteurs = SecteurCRUD.read(criterias);
-        Secteur secteur = this.secteurs.stream().filter(t->t.getId()==id).findFirst().get();
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("id", "=", id));
+        List<Secteur> secteurs = SecteurCRUD.read(criterias);
         SecteurHelper helper = new SecteurHelper();
-        return helper.convertSecteurToSecteurWS(secteur);
+        return helper.convertSecteurToSecteurWS(secteurs.get(0));
     }
 
     /**
@@ -111,7 +110,7 @@ public class SecteurService implements DatabaseConstants {
         List<String> fields = RequestParser.getFields(request);
         List<Secteur> secteurs;
         if (criterias == null && fields == null) {
-            secteurs = this.secteurs;
+            secteurs = SecteurCRUD.read();
         } else if (criterias != null && fields == null) {
             secteurs = SecteurCRUD.read(criterias);
         } else if (criterias == null && fields != null) {

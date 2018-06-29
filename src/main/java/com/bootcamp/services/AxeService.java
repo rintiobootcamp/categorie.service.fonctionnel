@@ -26,17 +26,17 @@ import java.util.List;
  */
 @Component
 public class AxeService implements DatabaseConstants {
-
-    List<Axe> axes = null;
-
-    @Scheduled(fixedRate = 750000)
-    public void getAllProjetInit(){
-        try {
-            this.axes = AxeCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//
+//    List<Axe> axes = null;
+//
+//    @Scheduled(fixedRate = 750000)
+//    public void getAllProjetInit(){
+//        try {
+//            this.axes = AxeCRUD.read();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
     /**
      * Insert the given axe in the database
@@ -91,13 +91,13 @@ public class AxeService implements DatabaseConstants {
      * @throws SQLException
      */
     public AxeWS read(int id) throws SQLException {
-//        Criterias criterias = new Criterias();
-//        criterias.addCriteria(new Criteria("id", "=", id));
-//        List<Axe> axes = AxeCRUD.read(criterias);
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("id", "=", id));
+        List<Axe> axes = AxeCRUD.read(criterias);
         AxeHelper helper = new AxeHelper();
-        Axe axe = this.axes.stream().filter(t->t.getId()==id).findFirst().get();
+       // Axe axe = this.axes.stream().filter(t->t.getId()==id).findFirst().get();
 
-        return helper.convertAxeToAxeWS(axe);
+        return helper.convertAxeToAxeWS(axes.get(0));
     }
 
     /**
@@ -130,7 +130,7 @@ public class AxeService implements DatabaseConstants {
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes;
         if (criterias == null && fields == null) {
-            axes = this.axes;
+            axes = AxeCRUD.read();
         } else if (criterias != null && fields == null) {
             axes = AxeCRUD.read(criterias);
         } else if (criterias == null && fields != null) {

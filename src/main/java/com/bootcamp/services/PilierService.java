@@ -26,16 +26,16 @@ import java.util.List;
  */
 @Component
 public class PilierService implements DatabaseConstants {
-    List<Pilier> piliers = null;
-
-    @Scheduled(fixedRate = 750000)
-    public void getAllProjetInit(){
-        try {
-            this.piliers = PilierCRUD.read();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
+//    List<Pilier> piliers = null;
+//
+//    @Scheduled(fixedRate = 750000)
+//    public void getAllProjetInit(){
+//        try {
+//            this.piliers = PilierCRUD.read();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//    }
 
 
     /**
@@ -46,12 +46,11 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public PilierWS read(int id) throws SQLException {
-//        Criterias criterias = new Criterias();
-//        criterias.addCriteria(new Criteria("id", "=", id));
-//        List<Pilier> piliers = PilierCRUD.read(criterias);
+        Criterias criterias = new Criterias();
+        criterias.addCriteria(new Criteria("id", "=", id));
+        List<Pilier> piliers = PilierCRUD.read(criterias);
         PilierHelper helper = new PilierHelper();
-        Pilier pilier = this.piliers.stream().filter(t->t.getId()==id).findFirst().get();
-        return helper.convertPilierToPilierWS(pilier);
+        return helper.convertPilierToPilierWS(piliers.get(0));
     }
 
     /**
@@ -65,7 +64,7 @@ public class PilierService implements DatabaseConstants {
      */
     public List<PilierWS> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
         PilierHelper helper = new PilierHelper();
-        return helper.getListPilierWS(this.piliers);
+        return helper.getListPilierWS(PilierCRUD.read());
     }
 
     /**
