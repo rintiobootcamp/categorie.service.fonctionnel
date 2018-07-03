@@ -13,12 +13,15 @@ import com.bootcamp.entities.Projet;
 import com.bootcamp.helpers.AxeHelper;
 import com.bootcamp.helpers.PilierHelper;
 import com.bootcamp.pivots.PilierWS;
+import com.rintio.elastic.client.ElasticClient;
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -45,12 +48,12 @@ public class PilierService implements DatabaseConstants {
      * @return pillar
      * @throws SQLException
      */
-    public PilierWS read(int id) throws SQLException {
+    public PilierWS read(int id) throws SQLException,Exception {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Pilier> piliers = PilierCRUD.read(criterias);
+        Pilier pilier = getAllPilier().stream().filter(t->t.getId()==id).findFirst().get();
         PilierHelper helper = new PilierHelper();
-        return helper.convertPilierToPilierWS(piliers.get(0));
+        return helper.convertPilierToPilierWS(pilier);
     }
 
     /**
@@ -62,9 +65,26 @@ public class PilierService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<PilierWS> getAll() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public List<PilierWS> getAll() throws SQLException, Exception,IllegalAccessException, DatabaseException, InvocationTargetException {
         PilierHelper helper = new PilierHelper();
-        return helper.getListPilierWS(PilierCRUD.read());
+        return helper.getListPilierWS(getAllPilier());
+    }
+
+    public List<Pilier> getAllPilier() throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        List<Object> objects = elasticClient.getAllObject("piliers");
+        ModelMapper modelMapper = new ModelMapper();
+        List<Pilier> rest = new ArrayList<>();
+        for(Object obj:objects){
+            rest.add(modelMapper.map(obj,Pilier.class));
+        }
+        return rest;
+    }
+
+    public void createPilierIndex(Pilier pilier) throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        elasticClient.creerIndexObject("piliers","pilier",pilier,pilier.getId());
+
     }
 
     /**
@@ -106,7 +126,7 @@ public class PilierService implements DatabaseConstants {
      * @return
      * @throws SQLException
      */
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException,Exception{
         PilierHelper helper = new PilierHelper();
         Pilier pilier = helper.convertPilierWSToPilier(read(id));
         PilierCRUD.delete(pilier);

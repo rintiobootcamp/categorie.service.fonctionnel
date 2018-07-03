@@ -58,7 +58,7 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a pilier", notes = "Read a pilier")
-    public ResponseEntity<PilierWS> read(@PathVariable int id) throws SQLException {
+    public ResponseEntity<PilierWS> read(@PathVariable int id) throws Exception {
 
         HttpStatus httpStatus ;
 
@@ -79,7 +79,7 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "liste des  pilars", notes = "liste des piliers")
-    public ResponseEntity<List<PilierWS>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<List<PilierWS>> read() throws SQLException, Exception, DatabaseException, InvocationTargetException {
 
         HttpStatus httpStatus ;
 

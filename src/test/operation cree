@@ -1,0 +1,9 @@
+ COT - MAL -ATT "idoperation": "ID OPERATION ALLER :: 85181059916613463880\n ID OPERATION RETOUR :: 85181132012745742403",
+
+{
+  "codeOperation": "string",
+  "idLigne": "string",
+  "id_tarif_base": "string",
+  "internationale": true,
+  "siegeReservable": true
+}

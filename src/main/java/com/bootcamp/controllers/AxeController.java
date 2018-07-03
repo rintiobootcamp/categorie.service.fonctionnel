@@ -81,7 +81,7 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a axe", notes = "Read a axe")
-    public ResponseEntity<List<AxeWS>> read() throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+    public ResponseEntity<List<AxeWS>> read() throws Exception, SQLException, DatabaseException, IllegalAccessException {
         List<AxeWS> axes = axeService.readAll(request);
         return new ResponseEntity<>(axes, HttpStatus.OK);
     }
@@ -96,7 +96,7 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.GET, value = "/{id}")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read a specific axe", notes = "Read a specific axe")
-    public ResponseEntity<AxeWS> read(@PathVariable(name = "id") int id) throws SQLException {
+    public ResponseEntity<AxeWS> read(@PathVariable(name = "id") int id) throws Exception {
 
         AxeWS axe = axeService.read(id);
         return new ResponseEntity<>(axe, HttpStatus.OK);
@@ -115,7 +115,7 @@ public class AxeController {
     @RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Delete a axe", notes = "Delete a axe")
-    public ResponseEntity<Boolean> delete(@PathVariable int id) throws InvocationTargetException, SQLException, DatabaseException, IllegalAccessException {
+    public ResponseEntity<Boolean> delete(@PathVariable int id) throws Exception, SQLException, DatabaseException, IllegalAccessException {
         axeService.delete(id);
         return new ResponseEntity<>(true, HttpStatus.OK);
     }
@@ -129,7 +129,7 @@ public class AxeController {
     @RequestMapping(method = RequestMethod.GET, value = "/count")
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Count axes", notes = "Count axes")
-    public ResponseEntity<HashMap<String, Integer>> countAxes() throws SQLException {
+    public ResponseEntity<HashMap<String, Integer>> countAxes() throws Exception {
 
         int count = axeService.getCountAxes();
         HashMap<String, Integer> map = new HashMap<>();

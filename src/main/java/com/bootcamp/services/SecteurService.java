@@ -7,9 +7,12 @@ import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.crud.SecteurCRUD;
+import com.bootcamp.entities.Pilier;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.helpers.SecteurHelper;
 import com.bootcamp.pivots.SecteurWS;
+import com.rintio.elastic.client.ElasticClient;
+import org.modelmapper.ModelMapper;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +20,7 @@ import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -73,7 +77,7 @@ public class SecteurService implements DatabaseConstants {
      * @return
      * @throws SQLException
      */
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) throws SQLException,Exception {
         SecteurHelper helper = new SecteurHelper();
         Secteur secteur = helper.convertSecteurWSToSecteur(read(id));
         SecteurCRUD.delete(secteur);
@@ -87,12 +91,12 @@ public class SecteurService implements DatabaseConstants {
      * @return sector
      * @throws SQLException
      */
-    public SecteurWS read(int id) throws SQLException {
+    public SecteurWS read(int id) throws SQLException,Exception {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Secteur> secteurs = SecteurCRUD.read(criterias);
+        Secteur secteur = getAllSecteurs().stream().filter(t->t.getId()==id).findFirst().get();
         SecteurHelper helper = new SecteurHelper();
-        return helper.convertSecteurToSecteurWS(secteurs.get(0));
+        return helper.convertSecteurToSecteurWS(secteur);
     }
 
     /**
@@ -105,12 +109,12 @@ public class SecteurService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<SecteurWS> read(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public List<SecteurWS> read(HttpServletRequest request) throws SQLException,Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Secteur> secteurs;
         if (criterias == null && fields == null) {
-            secteurs = SecteurCRUD.read();
+            secteurs = getAllSecteurs();
         } else if (criterias != null && fields == null) {
             secteurs = SecteurCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -121,6 +125,23 @@ public class SecteurService implements DatabaseConstants {
 
         SecteurHelper helper = new SecteurHelper();
         return helper.getListSecteurWS(secteurs);
+    }
+
+    public List<Secteur> getAllSecteurs() throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        List<Object> objects = elasticClient.getAllObject("secteurs");
+        ModelMapper modelMapper = new ModelMapper();
+        List<Secteur> rest = new ArrayList<>();
+        for(Object obj:objects){
+            rest.add(modelMapper.map(obj,Secteur.class));
+        }
+        return rest;
+    }
+
+    public void createSecteurIndex(Secteur secteur) throws Exception{
+        ElasticClient elasticClient = new ElasticClient();
+        elasticClient.creerIndexObject("secteurs","secteur",secteur,secteur.getId());
+
     }
 
     /**

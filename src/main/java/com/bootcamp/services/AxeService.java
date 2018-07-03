@@ -6,26 +6,33 @@ import com.bootcamp.commons.models.Criteria;
 import com.bootcamp.commons.models.Criterias;
 import com.bootcamp.commons.ws.utils.RequestParser;
 import com.bootcamp.crud.AxeCRUD;
-import com.bootcamp.crud.PilierCRUD;
 import com.bootcamp.entities.Axe;
 import com.bootcamp.entities.Secteur;
 import com.bootcamp.helpers.AxeHelper;
 import com.bootcamp.helpers.SecteurHelper;
 import com.bootcamp.pivots.AxeWS;
-import org.springframework.scheduling.annotation.Scheduled;
+import com.rintio.elastic.client.ElasticClient;
+import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Created by darextossa on 11/27/17.
  */
 @Component
-public class AxeService implements DatabaseConstants {
+public class AxeService {
+    ElasticClient elasticClient;
+//    @PostConstruct
+    public void AxeService(){
+        elasticClient = new ElasticClient();
+    }
 //
 //    List<Axe> axes = null;
 //
@@ -37,6 +44,7 @@ public class AxeService implements DatabaseConstants {
 //            e.printStackTrace();
 //        }
 //    }
+
 
     /**
      * Insert the given axe in the database
@@ -76,7 +84,7 @@ public class AxeService implements DatabaseConstants {
      * @return
      * @throws SQLException
      */
-    public boolean delete(int id) throws SQLException {
+    public boolean delete(int id) throws Exception {
         AxeHelper helper = new AxeHelper();
         Axe axe = helper.convertAxeWSToAxe(read(id));
         AxeCRUD.delete(axe);
@@ -90,14 +98,14 @@ public class AxeService implements DatabaseConstants {
      * @return axe
      * @throws SQLException
      */
-    public AxeWS read(int id) throws SQLException {
+    public AxeWS read(int id) throws Exception {
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        List<Axe> axes = AxeCRUD.read(criterias);
+//        List<Axe> axes = AxeCRUD.read(criterias);
         AxeHelper helper = new AxeHelper();
-       // Axe axe = this.axes.stream().filter(t->t.getId()==id).findFirst().get();
+        Axe axe = getAllAxes().stream().filter(t->t.getId()==id).findFirst().get();
 
-        return helper.convertAxeToAxeWS(axes.get(0));
+        return helper.convertAxeToAxeWS(axe);
     }
 
     /**
@@ -125,12 +133,12 @@ public class AxeService implements DatabaseConstants {
      * @throws DatabaseException
      * @throws InvocationTargetException
      */
-    public List<AxeWS> readAll(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public List<AxeWS> readAll(HttpServletRequest request) throws SQLException, IllegalAccessException, DatabaseException,Exception, InvocationTargetException {
         Criterias criterias = RequestParser.getCriterias(request);
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes;
         if (criterias == null && fields == null) {
-            axes = AxeCRUD.read();
+            axes = getAllAxes();
         } else if (criterias != null && fields == null) {
             axes = AxeCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -142,6 +150,25 @@ public class AxeService implements DatabaseConstants {
         AxeHelper helper = new AxeHelper();
         return helper.getListAxeWS(axes);
     }
+
+    public List<Axe> getAllAxes() throws Exception{
+         elasticClient = new ElasticClient();
+        List<Object> objects = elasticClient.getAllObject("axes");
+        ModelMapper modelMapper = new ModelMapper();
+        List<Axe> rest = new ArrayList<>();
+        for(Object obj:objects){
+            rest.add(modelMapper.map(obj,Axe.class));
+
+        }
+        return rest;
+    }
+
+    public void createAxeIndex(Axe axe) throws Exception{
+         elasticClient = new ElasticClient();
+        elasticClient.creerIndexObject("axes","axe",axe,axe.getId());
+
+    }
+
 
     /**
      * Count all the axes of the database

@@ -62,7 +62,7 @@ public class SecteurController {
     @RequestMapping(method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Read All Secteurs", notes = "Read aall the Secteurs")
-    public ResponseEntity<List<SecteurWS>> read() throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<List<SecteurWS>> read() throws SQLException, Exception, DatabaseException, InvocationTargetException {
         List<SecteurWS> secteurs = secteurService.read(request);
         return new ResponseEntity<>(secteurs, HttpStatus.OK);
     }
@@ -96,7 +96,7 @@ public class SecteurController {
     @RequestMapping(value = "/{id}", method = RequestMethod.GET)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Get one Secteurs", notes = "Read a particular Secteurs")
-    public ResponseEntity<SecteurWS> getById(@PathVariable int id) throws SQLException, IllegalAccessException, DatabaseException, InvocationTargetException {
+    public ResponseEntity<SecteurWS> getById(@PathVariable int id) throws Exception, IllegalAccessException, DatabaseException, InvocationTargetException {
         SecteurWS secteur = secteurService.read(id);
         return new ResponseEntity<>(secteur, HttpStatus.OK);
     }
