@@ -19,7 +19,6 @@ public class ElasticTest {
     //@Test
     public void createAxeIndex() throws Exception{
         ElasticClient elasticClient = new ElasticClient();
-
         List<Axe>  axes = AxeCRUD.read();
         for(Axe axe:axes){
             System.out.println("creation de "+axe.getId());

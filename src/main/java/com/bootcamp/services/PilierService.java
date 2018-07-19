@@ -39,7 +39,10 @@ public class PilierService implements DatabaseConstants {
 //            e.printStackTrace();
 //        }
 //    }
-
+    ElasticClient elasticClient;
+    public PilierService(){
+        elasticClient = new ElasticClient();
+    }
 
     /**
      * Get a pillar by its id
@@ -82,9 +85,19 @@ public class PilierService implements DatabaseConstants {
     }
 
     public void createPilierIndex(Pilier pilier) throws Exception{
-        ElasticClient elasticClient = new ElasticClient();
+//        ElasticClient elasticClient = new ElasticClient();
         elasticClient.creerIndexObject("piliers","pilier",pilier,pilier.getId());
 
+    }
+
+    public boolean createAllIndexPilier()throws Exception{
+//        ElasticClient elasticClient = new ElasticClient();
+        List<Pilier> piliers = PilierCRUD.read();
+        for (Pilier pilier : piliers){
+            elasticClient.creerIndexObjectNative("piliers","pilier",pilier,pilier.getId());
+//            LOG.info("pilier "+pilier.getNom()+" created");
+        }
+        return true;
     }
 
     /**

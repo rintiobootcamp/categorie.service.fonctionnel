@@ -152,7 +152,7 @@ public class AxeService {
     }
 
     public List<Axe> getAllAxes() throws Exception{
-         elasticClient = new ElasticClient();
+//         elasticClient = new ElasticClient();
         List<Object> objects = elasticClient.getAllObject("axes");
         ModelMapper modelMapper = new ModelMapper();
         List<Axe> rest = new ArrayList<>();
@@ -161,6 +161,16 @@ public class AxeService {
 
         }
         return rest;
+    }
+
+    public boolean createAllAxeIndex() throws Exception{
+//        ElasticClient elasticClient = new ElasticClient();
+        List<Axe> axes = AxeCRUD.read();
+        for (Axe axe : axes){
+            elasticClient.creerIndexObjectNative("axes","axe",axe,axe.getId());
+//            LOG.info("axe "+axe.getNom()+" created");
+        }
+        return true;
     }
 
     public void createAxeIndex(Axe axe) throws Exception{

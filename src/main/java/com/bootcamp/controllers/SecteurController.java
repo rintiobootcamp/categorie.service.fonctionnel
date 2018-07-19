@@ -35,6 +35,16 @@ public class SecteurController {
     @Autowired
     HttpServletRequest request;
 
+    @RequestMapping(value = "/elasticdata",method = RequestMethod.GET)
+    @ApiVersions({"1.0"})
+    @ApiOperation(value = "Create Elasticsearch indesxes", notes = "Create Elasticsearch indesxes")
+    public ResponseEntity<String> createIndexs() throws Exception {
+        String retour = "NOT DONE";
+        if (secteurService.createAllIndexSecteur())
+            retour = "DONE";
+        return new ResponseEntity<>(retour, HttpStatus.OK);
+    }
+
     /**
      * Insert the given sector in the database
      *

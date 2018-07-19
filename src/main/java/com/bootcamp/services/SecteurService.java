@@ -38,6 +38,11 @@ public class SecteurService implements DatabaseConstants {
 //        }
 //    }
 
+    ElasticClient elasticClient;
+    public SecteurService(){
+        elasticClient = new ElasticClient();
+    }
+
     /**
      * Insert the given sector in the database
      *
@@ -142,6 +147,16 @@ public class SecteurService implements DatabaseConstants {
         ElasticClient elasticClient = new ElasticClient();
         elasticClient.creerIndexObject("secteurs","secteur",secteur,secteur.getId());
 
+    }
+
+    public boolean createAllIndexSecteur()throws Exception{
+//        ElasticClient elasticClient = new ElasticClient();
+        List<Secteur> secteurs = SecteurCRUD.read();
+        for (Secteur secteur : secteurs){
+            elasticClient.creerIndexObjectNative("secteurs","secteur",secteur,secteur.getId());
+//            LOG.info("secteur "+secteur.getNom()+" created");
+        }
+        return true;
     }
 
     /**
