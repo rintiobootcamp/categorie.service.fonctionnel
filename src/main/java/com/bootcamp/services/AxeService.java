@@ -28,6 +28,7 @@ import java.util.List;
  */
 @Component
 public class AxeService {
+
     ElasticClient elasticClient;
 //    @PostConstruct
     public void AxeService(){
