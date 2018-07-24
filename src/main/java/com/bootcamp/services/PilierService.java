@@ -40,7 +40,8 @@ public class PilierService implements DatabaseConstants {
 //        }
 //    }
     ElasticClient elasticClient;
-    public PilierService(){
+    @PostConstruct
+    public void PilierService(){
         elasticClient = new ElasticClient();
     }
 

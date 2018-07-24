@@ -30,7 +30,7 @@ import java.util.List;
 public class AxeService {
 
     ElasticClient elasticClient;
-//    @PostConstruct
+    @PostConstruct
     public void AxeService(){
         elasticClient = new ElasticClient();
     }

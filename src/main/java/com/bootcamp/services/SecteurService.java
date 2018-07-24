@@ -39,7 +39,8 @@ public class SecteurService implements DatabaseConstants {
 //    }
 
     ElasticClient elasticClient;
-    public SecteurService(){
+    @PostConstruct
+    public void SecteurService(){
         elasticClient = new ElasticClient();
     }
 
