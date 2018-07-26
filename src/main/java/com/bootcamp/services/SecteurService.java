@@ -70,7 +70,8 @@ public class SecteurService implements DatabaseConstants {
         int id = secteur.getId();
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
-        Secteur secteurToUpDate = SecteurCRUD.read(criterias).get(0);
+//        Secteur secteurToUpDate = SecteurCRUD.read(criterias).get(0);
+        Secteur secteurToUpDate = getAllSecteurs().stream().filter(t->t.getId()==id).findFirst().get();
         secteur.setDateCreation(secteurToUpDate.getDateCreation());
         secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.update(secteur);
@@ -174,7 +175,7 @@ public class SecteurService implements DatabaseConstants {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
 //        List<Secteur> secteurs = SecteurCRUD.read(criterias);
-        Secteur secteur = getAllSecteurs().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
+        Secteur secteur = getAllSecteurs().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
 
         SecteurHelper helper = new SecteurHelper();
         return helper.convertSecteurToSecteurWS(secteur);

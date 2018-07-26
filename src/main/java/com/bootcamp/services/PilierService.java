@@ -160,7 +160,7 @@ public class PilierService implements DatabaseConstants {
     public PilierWS getByName(String nom) throws Exception {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
-        Pilier pilier = getAllPilier().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
+        Pilier pilier = getAllPilier().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
         PilierHelper helper = new PilierHelper();
         return helper.convertPilierToPilierWS(pilier);
     }

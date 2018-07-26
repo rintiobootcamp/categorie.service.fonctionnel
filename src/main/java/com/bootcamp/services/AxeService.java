@@ -125,7 +125,7 @@ public class AxeService {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
 //        List<Axe> axes = AxeCRUD.read(criterias);
-        Axe axe = getAllAxes().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
+        Axe axe = getAllAxes().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
         AxeHelper helper = new AxeHelper();
         return helper.convertAxeToAxeWS(axe);
     }
