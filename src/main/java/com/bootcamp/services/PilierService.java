@@ -53,8 +53,8 @@ public class PilierService implements DatabaseConstants {
      * @throws SQLException
      */
     public PilierWS read(int id) throws SQLException,Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
         Pilier pilier = getAllPilier().stream().filter(t->t.getId()==id).findFirst().get();
         PilierHelper helper = new PilierHelper();
         return helper.convertPilierToPilierWS(pilier);
@@ -108,10 +108,11 @@ public class PilierService implements DatabaseConstants {
      * @return pilier
      * @throws SQLException
      */
-    public Pilier create(Pilier pilier) throws SQLException {
+    public Pilier create(Pilier pilier) throws Exception {
         pilier.setDateCreation(System.currentTimeMillis());
         pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.create(pilier);
+        createAllIndexPilier();
         return pilier;
     }
 
@@ -122,14 +123,15 @@ public class PilierService implements DatabaseConstants {
      * @return
      * @throws SQLException
      */
-    public boolean update(Pilier pilier) throws SQLException {
+    public boolean update(Pilier pilier) throws Exception {
         int id = pilier.getId();
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
-        Pilier pilierToUpdate = PilierCRUD.read(criterias).get(0);
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
+        Pilier pilierToUpdate = getAllPilier().stream().filter(t->t.getId()==id).findFirst().get();
         pilier.setDateCreation(pilierToUpdate.getDateCreation());
         pilier.setDateMiseAJour(System.currentTimeMillis());
         PilierCRUD.update(pilier);
+        createAllIndexPilier();
         return true;
     }
 
@@ -144,6 +146,7 @@ public class PilierService implements DatabaseConstants {
         PilierHelper helper = new PilierHelper();
         Pilier pilier = helper.convertPilierWSToPilier(read(id));
         PilierCRUD.delete(pilier);
+        createAllIndexPilier();
         return true;
     }
 
@@ -154,13 +157,12 @@ public class PilierService implements DatabaseConstants {
      * @return pillar
      * @throws SQLException
      */
-    public PilierWS getByName(String nom) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("nom", "=", nom));
-        List<Pilier> piliers = PilierCRUD.read(criterias);
+    public PilierWS getByName(String nom) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("nom", "=", nom));
+        Pilier pilier = getAllPilier().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
         PilierHelper helper = new PilierHelper();
-
-        return helper.convertPilierToPilierWS(piliers.get(0));
+        return helper.convertPilierToPilierWS(pilier);
     }
 
     /**

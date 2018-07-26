@@ -32,6 +32,8 @@ import javax.validation.Valid;
 @CrossOrigin(origins = "*")
 public class AxeController {
 
+
+
     private final Logger LOG = LoggerFactory.getLogger(AxeController.class);
     @Autowired
     AxeService axeService;

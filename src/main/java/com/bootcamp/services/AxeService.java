@@ -22,6 +22,7 @@ import java.lang.reflect.InvocationTargetException;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * Created by darextossa on 11/27/17.
@@ -58,6 +59,7 @@ public class AxeService {
         axe.setDateCreation(System.currentTimeMillis());
         axe.setDateMiseAJour(System.currentTimeMillis());
         AxeCRUD.create(axe);
+        createAllAxeIndex();
         return axe;
     }
 
@@ -68,14 +70,16 @@ public class AxeService {
      * @return
      * @throws SQLException
      */
-    public boolean update(Axe axe) throws SQLException {
+    public boolean update(Axe axe) throws Exception {
 //        int id = axe.getId();
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("id", "=", id));
 //        Axe axesToUpdate = AxeCRUD.read(criterias).get(0);
 //        axe.setDateCreation(axesToUpdate.getDateCreation());
         axe.setDateMiseAJour(System.currentTimeMillis());
-        return AxeCRUD.update(axe);
+       if(AxeCRUD.update(axe))
+           createAllAxeIndex();
+       return true;
     }
 
     /**
@@ -89,6 +93,7 @@ public class AxeService {
         AxeHelper helper = new AxeHelper();
         Axe axe = helper.convertAxeWSToAxe(read(id));
         AxeCRUD.delete(axe);
+        createAllAxeIndex();
         return true;
     }
 
@@ -100,8 +105,8 @@ public class AxeService {
      * @throws SQLException
      */
     public AxeWS read(int id) throws Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
 //        List<Axe> axes = AxeCRUD.read(criterias);
         AxeHelper helper = new AxeHelper();
         Axe axe = getAllAxes().stream().filter(t->t.getId()==id).findFirst().get();
@@ -116,12 +121,13 @@ public class AxeService {
      * @return axe
      * @throws SQLException
      */
-    public AxeWS getByName(String nom) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("nom", "=", nom));
-        List<Axe> axes = AxeCRUD.read(criterias);
+    public AxeWS getByName(String nom) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("nom", "=", nom));
+//        List<Axe> axes = AxeCRUD.read(criterias);
+        Axe axe = getAllAxes().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
         AxeHelper helper = new AxeHelper();
-        return helper.convertAxeToAxeWS(axes.get(0));
+        return helper.convertAxeToAxeWS(axe);
     }
 
     /**
@@ -187,8 +193,8 @@ public class AxeService {
      * @return count
      * @throws SQLException
      */
-    public int getCountAxes() throws SQLException {
-        return AxeCRUD.read().size();
+    public int getCountAxes() throws Exception {
+        return getAllAxes().size();
     }
 
     /**

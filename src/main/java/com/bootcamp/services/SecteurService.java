@@ -51,10 +51,11 @@ public class SecteurService implements DatabaseConstants {
      * @return sector
      * @throws SQLException
      */
-    public Secteur create(Secteur secteur) throws SQLException {
+    public Secteur create(Secteur secteur) throws Exception {
         secteur.setDateCreation(System.currentTimeMillis());
         secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.create(secteur);
+        createAllIndexSecteur();
         return secteur;
     }
 
@@ -65,7 +66,7 @@ public class SecteurService implements DatabaseConstants {
      * @return
      * @throws SQLException
      */
-    public boolean update(Secteur secteur) throws SQLException {
+    public boolean update(Secteur secteur) throws Exception {
         int id = secteur.getId();
         Criterias criterias = new Criterias();
         criterias.addCriteria(new Criteria("id", "=", id));
@@ -73,6 +74,7 @@ public class SecteurService implements DatabaseConstants {
         secteur.setDateCreation(secteurToUpDate.getDateCreation());
         secteur.setDateMiseAJour(System.currentTimeMillis());
         SecteurCRUD.update(secteur);
+        createAllIndexSecteur();
         return true;
     }
 
@@ -87,6 +89,7 @@ public class SecteurService implements DatabaseConstants {
         SecteurHelper helper = new SecteurHelper();
         Secteur secteur = helper.convertSecteurWSToSecteur(read(id));
         SecteurCRUD.delete(secteur);
+        createAllIndexSecteur();
         return true;
     }
 
@@ -98,8 +101,8 @@ public class SecteurService implements DatabaseConstants {
      * @throws SQLException
      */
     public SecteurWS read(int id) throws SQLException,Exception {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("id", "=", id));
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("id", "=", id));
         Secteur secteur = getAllSecteurs().stream().filter(t->t.getId()==id).findFirst().get();
         SecteurHelper helper = new SecteurHelper();
         return helper.convertSecteurToSecteurWS(secteur);
@@ -167,13 +170,14 @@ public class SecteurService implements DatabaseConstants {
      * @return sector
      * @throws SQLException
      */
-    public SecteurWS getByName(String nom) throws SQLException {
-        Criterias criterias = new Criterias();
-        criterias.addCriteria(new Criteria("nom", "=", nom));
-        List<Secteur> secteurs = SecteurCRUD.read(criterias);
+    public SecteurWS getByName(String nom) throws Exception {
+//        Criterias criterias = new Criterias();
+//        criterias.addCriteria(new Criteria("nom", "=", nom));
+//        List<Secteur> secteurs = SecteurCRUD.read(criterias);
+        Secteur secteur = getAllSecteurs().stream().filter(t->t.getNom().equals(nom)).findFirst().get();
 
         SecteurHelper helper = new SecteurHelper();
-        return helper.convertSecteurToSecteurWS(secteurs.get(0));
+        return helper.convertSecteurToSecteurWS(secteur);
     }
 
     /**
