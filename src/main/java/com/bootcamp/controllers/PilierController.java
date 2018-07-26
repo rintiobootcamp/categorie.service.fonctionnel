@@ -52,7 +52,7 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a pilier", notes = "Create a pilier")
-    public ResponseEntity<Pilier> create(@RequestBody @Valid Pilier pilier) throws SQLException {
+    public ResponseEntity<Pilier> create(@RequestBody @Valid Pilier pilier) throws Exception {
         pilier = pilierService.create(pilier);
         return new ResponseEntity<>(pilier, HttpStatus.OK);
     }
@@ -107,7 +107,7 @@ public class PilierController {
     @RequestMapping(method = RequestMethod.PUT)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a pilier", notes = "update a pilier")
-    public ResponseEntity<Boolean> update(@RequestBody @Valid Pilier pilier) throws SQLException {
+    public ResponseEntity<Boolean> update(@RequestBody @Valid Pilier pilier) throws Exception {
         boolean done = pilierService.update(pilier);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }

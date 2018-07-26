@@ -55,7 +55,7 @@ public class SecteurController {
     @RequestMapping(method = RequestMethod.POST)
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Create a secteur", notes = "Create a secteur")
-    public ResponseEntity<Secteur> create(@RequestBody @Valid Secteur secteur) throws SQLException {
+    public ResponseEntity<Secteur> create(@RequestBody @Valid Secteur secteur) throws Exception {
         secteur = secteurService.create(secteur);
         return new ResponseEntity<>(secteur, HttpStatus.OK);
     }
@@ -88,7 +88,7 @@ public class SecteurController {
     @ApiVersions({"1.0"})
     @ApiOperation(value = "Update a secteur", notes = "update a secteur")
 
-    public ResponseEntity<Boolean> update(@RequestBody Secteur secteur) throws SQLException {
+    public ResponseEntity<Boolean> update(@RequestBody Secteur secteur) throws Exception {
         boolean done =  secteurService.update(secteur);
         return new ResponseEntity<>(done, HttpStatus.OK);
     }
