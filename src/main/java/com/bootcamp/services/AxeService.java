@@ -31,9 +31,17 @@ import java.util.stream.Collectors;
 public class AxeService {
 
     ElasticClient elasticClient;
+    List<Axe> axes;
     @PostConstruct
     public void AxeService(){
+        this.axes = new ArrayList<>();
         elasticClient = new ElasticClient();
+    }
+
+    public List<Axe> lireAxe() throws Exception{
+        if(this.axes.isEmpty())
+            getAllAxes();
+        return this.axes;
     }
 //
 //    List<Axe> axes = null;
@@ -109,7 +117,7 @@ public class AxeService {
 //        criterias.addCriteria(new Criteria("id", "=", id));
 //        List<Axe> axes = AxeCRUD.read(criterias);
         AxeHelper helper = new AxeHelper();
-        Axe axe = getAllAxes().stream().filter(t->t.getId()==id).findFirst().get();
+        Axe axe = lireAxe().stream().filter(t->t.getId()==id).findFirst().get();
 
         return helper.convertAxeToAxeWS(axe);
     }
@@ -125,7 +133,7 @@ public class AxeService {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
 //        List<Axe> axes = AxeCRUD.read(criterias);
-        Axe axe = getAllAxes().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
+        Axe axe = lireAxe().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
         AxeHelper helper = new AxeHelper();
         return helper.convertAxeToAxeWS(axe);
     }
@@ -145,7 +153,7 @@ public class AxeService {
         List<String> fields = RequestParser.getFields(request);
         List<Axe> axes;
         if (criterias == null && fields == null) {
-            axes = getAllAxes();
+            axes = lireAxe();
         } else if (criterias != null && fields == null) {
             axes = AxeCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -167,6 +175,7 @@ public class AxeService {
             rest.add(modelMapper.map(obj,Axe.class));
 
         }
+        this.axes = rest;
         return rest;
     }
 
@@ -181,7 +190,7 @@ public class AxeService {
     }
 
     public void createAxeIndex(Axe axe) throws Exception{
-         elasticClient = new ElasticClient();
+//         elasticClient = new ElasticClient();
         elasticClient.creerIndexObject("axes","axe",axe,axe.getId());
 
     }
@@ -194,7 +203,7 @@ public class AxeService {
      * @throws SQLException
      */
     public int getCountAxes() throws Exception {
-        return getAllAxes().size();
+        return lireAxe().size();
     }
 
     /**

@@ -1,0 +1,19 @@
+apiVersion: extensions/v1beta1
+kind: Deployment
+metadata:
+  name: sfcategorie
+spec:
+  replicas: 2
+  template:
+    metadata:
+      labels:
+        app: sfcategorie
+    spec:
+      containers:
+      - name: sfcategorie
+        image: sfcategorie
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 6082
+      imagePullSecrets:
+      - name: registry.gitlab.com

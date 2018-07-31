@@ -40,9 +40,17 @@ public class PilierService implements DatabaseConstants {
 //        }
 //    }
     ElasticClient elasticClient;
+    private List<Pilier> piliers;
     @PostConstruct
     public void PilierService(){
+        this.piliers = new ArrayList<>();
         elasticClient = new ElasticClient();
+    }
+
+    public List<Pilier> lirePilier() throws Exception{
+        if(this.piliers.isEmpty())
+            getAllPilier();
+        return  this.piliers;
     }
 
     /**
@@ -55,7 +63,7 @@ public class PilierService implements DatabaseConstants {
     public PilierWS read(int id) throws SQLException,Exception {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("id", "=", id));
-        Pilier pilier = getAllPilier().stream().filter(t->t.getId()==id).findFirst().get();
+        Pilier pilier = lirePilier().stream().filter(t->t.getId()==id).findFirst().get();
         PilierHelper helper = new PilierHelper();
         return helper.convertPilierToPilierWS(pilier);
     }
@@ -71,7 +79,7 @@ public class PilierService implements DatabaseConstants {
      */
     public List<PilierWS> getAll() throws SQLException, Exception,IllegalAccessException, DatabaseException, InvocationTargetException {
         PilierHelper helper = new PilierHelper();
-        return helper.getListPilierWS(getAllPilier());
+        return helper.getListPilierWS(lirePilier());
     }
 
     public List<Pilier> getAllPilier() throws Exception{
@@ -82,6 +90,7 @@ public class PilierService implements DatabaseConstants {
         for(Object obj:objects){
             rest.add(modelMapper.map(obj,Pilier.class));
         }
+        this.piliers = rest;
         return rest;
     }
 
@@ -98,6 +107,7 @@ public class PilierService implements DatabaseConstants {
             elasticClient.creerIndexObjectNative("piliers","pilier",pilier,pilier.getId());
 //            LOG.info("pilier "+pilier.getNom()+" created");
         }
+        getAllPilier();
         return true;
     }
 
@@ -160,7 +170,7 @@ public class PilierService implements DatabaseConstants {
     public PilierWS getByName(String nom) throws Exception {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
-        Pilier pilier = getAllPilier().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
+        Pilier pilier =lirePilier().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
         PilierHelper helper = new PilierHelper();
         return helper.convertPilierToPilierWS(pilier);
     }
@@ -201,9 +211,7 @@ public class PilierService implements DatabaseConstants {
         Axe axe = axeHelper.convertAxeWSToAxe(service.read(idAxe));
         PilierHelper helper = new PilierHelper();
         Pilier pilier = helper.convertPilierWSToPilier(read(idPilier));
-
         pilier.getAxes().add(axe);
-
         this.update(pilier);
         return pilier;
     }

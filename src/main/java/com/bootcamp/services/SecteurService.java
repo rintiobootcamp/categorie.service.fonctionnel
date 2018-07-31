@@ -39,11 +39,18 @@ public class SecteurService implements DatabaseConstants {
 //    }
 
     ElasticClient elasticClient;
+    private List<Secteur> secteurs;
     @PostConstruct
     public void SecteurService(){
+        this.secteurs = new ArrayList<>();
         elasticClient = new ElasticClient();
     }
 
+    public List<Secteur> lireSecteur() throws Exception{
+        if(this.secteurs.isEmpty())
+            getAllSecteurs();
+        return this.secteurs;
+    }
     /**
      * Insert the given sector in the database
      *
@@ -104,7 +111,7 @@ public class SecteurService implements DatabaseConstants {
     public SecteurWS read(int id) throws SQLException,Exception {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("id", "=", id));
-        Secteur secteur = getAllSecteurs().stream().filter(t->t.getId()==id).findFirst().get();
+        Secteur secteur = lireSecteur().stream().filter(t->t.getId()==id).findFirst().get();
         SecteurHelper helper = new SecteurHelper();
         return helper.convertSecteurToSecteurWS(secteur);
     }
@@ -124,7 +131,7 @@ public class SecteurService implements DatabaseConstants {
         List<String> fields = RequestParser.getFields(request);
         List<Secteur> secteurs;
         if (criterias == null && fields == null) {
-            secteurs = getAllSecteurs();
+            secteurs = lireSecteur();
         } else if (criterias != null && fields == null) {
             secteurs = SecteurCRUD.read(criterias);
         } else if (criterias == null && fields != null) {
@@ -145,11 +152,12 @@ public class SecteurService implements DatabaseConstants {
         for(Object obj:objects){
             rest.add(modelMapper.map(obj,Secteur.class));
         }
+        this.secteurs = rest;
         return rest;
     }
 
     public void createSecteurIndex(Secteur secteur) throws Exception{
-        ElasticClient elasticClient = new ElasticClient();
+//        ElasticClient elasticClient = new ElasticClient();
         elasticClient.creerIndexObject("secteurs","secteur",secteur,secteur.getId());
 
     }
@@ -161,6 +169,7 @@ public class SecteurService implements DatabaseConstants {
             elasticClient.creerIndexObjectNative("secteurs","secteur",secteur,secteur.getId());
 //            LOG.info("secteur "+secteur.getNom()+" created");
         }
+        getAllSecteurs();
         return true;
     }
 
@@ -175,7 +184,7 @@ public class SecteurService implements DatabaseConstants {
 //        Criterias criterias = new Criterias();
 //        criterias.addCriteria(new Criteria("nom", "=", nom));
 //        List<Secteur> secteurs = SecteurCRUD.read(criterias);
-        Secteur secteur = getAllSecteurs().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
+        Secteur secteur = lireSecteur().stream().filter(t->t.getNom().equalsIgnoreCase(nom)).findFirst().get();
 
         SecteurHelper helper = new SecteurHelper();
         return helper.convertSecteurToSecteurWS(secteur);
