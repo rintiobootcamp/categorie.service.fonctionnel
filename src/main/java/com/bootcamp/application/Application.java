@@ -7,6 +7,9 @@
  */
 package com.bootcamp.application;
 
+import com.bootcamp.services.AxeService;
+import com.bootcamp.services.PilierService;
+import com.bootcamp.services.SecteurService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.boot.SpringApplication;
@@ -44,6 +47,13 @@ public class Application extends SpringBootServletInitializer {
     public static void main(String[] args) {
 
         SpringApplication.run(Application.class, args);
+        try {
+            new AxeService().createAllAxeIndex();
+            new PilierService().createAllIndexPilier();
+            new SecteurService().createAllIndexSecteur();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
     }
 
